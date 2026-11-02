@@ -690,22 +690,25 @@ async function markRecorded(){
 }
 
 /* ============================== EQUIPO ============================== */
-const ROLES={explica:'Sale y explica',sale:'Sale en vídeos',aveces:'Sale a veces',nosale:'No suele salir'};
+const ROLES={explica:'Sale mucho',sale:'Sale en vídeos',aveces:'Sale a veces',nosale:'No suele salir'};
 const DEFAULT_TEAM=[{name:'Ariadna',role:'explica'},{name:'Óscar',role:'explica'},{name:'Noemi',role:'sale'},{name:'Jean-Pierre',role:'sale'},{name:'Eduardo',role:'aveces'},{name:'Cristian',role:'nosale'}];
 function team(){return Array.isArray(SETTINGS.team)&&SETTINGS.team.length?SETTINGS.team:DEFAULT_TEAM}
 function seeded(seed){let h=2166136261;for(const c of String(seed))h=Math.imul(h^c.charCodeAt(0),16777619);return()=>{h=Math.imul(h^(h>>>15),2246822507);h=Math.imul(h^(h>>>13),3266489909);return((h^=h>>>16)>>>0)/4294967296}}
 function suggestCast(pillar,title,seed){
   const R=seed==null?Math.random:seeded(seed),pick=a=>a.length?a[Math.floor(R()*a.length)]:null;
   const T=team(),by=r=>T.filter(m=>m.role===r).map(m=>m.name);
-  const exp=by('explica'),sale=by('sale'),av=by('aveces');
+  const mucho=by('explica'),sale=by('sale'),av=by('aveces');
   if(/equipo/i.test(title||''))return T.map(m=>m.name);
+  /* todos pueden explicar; los que "salen mucho" tienen el doble de peso */
+  const pool=[...mucho,...mucho,...sale];
   const out=[];const add=n=>{if(n&&!out.includes(n))out.push(n)};
-  if(['consejos','clientes','equipo'].includes(pillar)){add(pick(exp)||pick(sale));if(R()<.25)add(pick(sale))}
-  else if(['proceso','antes'].includes(pillar)){add(pick(sale)||pick(exp));if(R()<.5)add(pick(exp))}
-  else{add(pick([...sale,...exp]));add(pick([...sale,...exp]));if(av.length&&R()<.25)add(pick(av))}
+  add(pick(pool));
+  const two=['proceso','antes','tendencias','promo','humor'].includes(pillar)?.6:.3;
+  if(R()<two)add(pick(pool.filter(n=>!out.includes(n))));
+  if(av.length&&R()<.2)add(pick(av));
   return out;
 }
-function castHtml(c){return (c||[]).map(n=>{const m=team().find(x=>x.name===n);return `<span class="pp">${esc(n)}${m&&m.role==='explica'?' <small>explica</small>':''}</span>`}).join('')}
+function castHtml(c){return (c||[]).map(n=>{return `<span class="pp">${esc(n)}</span>`}).join('')}
 let edCast=[];
 function drawEdCast(){const names=[...new Set([...team().map(m=>m.name),...edCast])];
   $('ed-cast').innerHTML=names.map(n=>`<button class="chip ${edCast.includes(n)?'cast-on':''}" data-cast-toggle="${esc(n)}">${esc(n)}</button>`).join('')}
