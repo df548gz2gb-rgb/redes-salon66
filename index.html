@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Redes Salón 66</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-title" content="Salón 66">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: monochrome — a calm home with three shortcuts; every section is its own page with "← Inicio" */
+:root{
+  --bg:#FFFFFF; --fg:#0A0A0A; --soft:#F4F4F4; --line:#E4E4E4; --muted:#6E6E6E; --faint:#A8A8A8;
+  --inv-bg:#0A0A0A; --inv-fg:#FFFFFF;
+  --display:'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --body:'Manrope', 'Helvetica Neue', Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0A0A0A; --fg:#F5F5F5; --soft:#161616; --line:#262626; --muted:#9A9A9A; --faint:#5C5C5C;
+  --inv-bg:#F5F5F5; --inv-fg:#0A0A0A; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0A0A0A; --fg:#F5F5F5; --soft:#161616; --line:#262626; --muted:#9A9A9A; --faint:#5C5C5C;
+  --inv-bg:#F5F5F5; --inv-fg:#0A0A0A; color-scheme:dark }
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.02em;font-weight:700}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+a{color:inherit}
+.wrap{max-width:640px;margin:0 auto;padding-block:28px 72px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)} .small{font-size:14px}
+
+/* ---------- inicio ---------- */
+.home{min-height:calc(100vh - 100px);display:flex;flex-direction:column}
+.home-head{padding-top:clamp(24px,8vh,72px);margin-bottom:40px}
+.home-head h1{font-size:clamp(34px,9vw,52px);line-height:1.02;font-weight:800;margin-top:14px}
+.home-head .date{margin-top:14px;color:var(--muted);font-size:15px}
+.shortcuts{display:flex;flex-direction:column;border-top:1px solid var(--fg)}
+.sc{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:24px 0}
+.sc .num{font-family:var(--display);font-size:13px;font-weight:600;color:var(--faint);width:24px;flex-shrink:0;align-self:flex-start;padding-top:6px}
+.sc .txt{flex:1;min-width:0}
+.sc .txt b{display:block;font-family:var(--display);font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.sc .txt span{display:block;color:var(--muted);font-size:15px;margin-top:4px}
+.sc .arr{font-size:22px;transition:transform .15s}
+.sc:hover .arr{transform:translateX(4px)}
+.home-foot{margin-top:auto;padding-top:48px;display:flex;flex-wrap:wrap;gap:8px 22px}
+.home-foot button{background:none;border:0;padding:4px 0;color:var(--muted);font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--line)}
+.home-foot button:hover{color:var(--fg)}
+
+/* ---------- cabecera de sección ---------- */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:28px}
+.back{background:none;border:0;padding:6px 0;font-weight:600;font-size:15px;display:inline-flex;gap:8px;align-items:center}
+.ph{margin-bottom:24px}
+.ph h1{font-size:clamp(30px,7vw,40px);font-weight:800;line-height:1.05;margin-top:8px}
+.ph p{color:var(--muted);margin:10px 0 0;max-width:46ch}
+
+.btn{border:1px solid var(--fg);background:var(--bg);color:var(--fg);border-radius:999px;padding:11px 20px;font-weight:600;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn.solid{background:var(--inv-bg);color:var(--inv-fg);border-color:var(--inv-bg)}
+.btn.sm{padding:7px 14px;font-size:14px}
+.btn.ghost{border-color:var(--line)}
+.link-btn{background:none;border:0;padding:4px 0;font-weight:600;text-decoration:underline;text-underline-offset:4px;font-size:15px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.list{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.sec{margin-top:40px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:12px}
+.sec-h h2{font-size:20px}
+.count{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.note{border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:14px;color:var(--muted);margin-bottom:24px}
+
+/* ---------- calendario ---------- */
+.calnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.calnav h2{font-size:26px;text-transform:capitalize}
+.arrows{display:flex;gap:8px}
+.circle{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--bg);font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));row-gap:6px}
+.dow{text-align:center;font-size:12px;font-weight:600;color:var(--faint);padding-bottom:8px}
+.day{min-width:0;height:clamp(48px,13vw,68px);border:0;background:none;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-variant-numeric:tabular-nums;font-size:15px;font-weight:500}
+.day.out{color:var(--faint)}
+.day.pub .n{border-bottom:2px solid var(--fg);line-height:1.2}
+.day.out.pub .n{border-color:var(--faint)}
+.day.today{background:var(--soft)}
+.day.sel{background:var(--inv-bg);color:var(--inv-fg)}
+.day.sel.pub .n{border-color:var(--inv-fg)}
+.dots{display:flex;gap:3px;height:6px}
+.dots i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.dots i.open{background:none;border:1.5px solid currentColor}
+.cal-key{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted);margin:18px 0 0}
+.cal-key span{display:inline-flex;align-items:center;gap:7px}
+.k-under{display:inline-block;width:14px;border-bottom:2px solid var(--fg)}
+.k-dot{width:6px;height:6px;border-radius:50%;background:var(--fg)}
+.k-dot.open{background:none;border:1.5px solid var(--fg)}
+.week{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;margin-top:22px}
+.week b{font-family:var(--display);font-size:18px}
+.meter{display:flex;gap:4px}
+.meter i{width:22px;height:6px;border-radius:3px;background:var(--line)}
+.meter i.on{background:var(--fg)}
+
+/* ---------- elementos ---------- */
+.item{display:flex;align-items:flex-start;gap:14px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:18px 0;cursor:pointer}
+.item .b{flex:1;min-width:0}
+.item .t{font-weight:700;font-size:17px;line-height:1.3}
+.item .m{font-size:14px;color:var(--muted);margin-top:4px}
+.item .q{font-size:14px;color:var(--muted);margin-top:8px;font-style:italic}
+.item .arr{color:var(--faint);padding-top:2px}
+.stt{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;border:1px solid var(--fg);margin-right:6px;font-style:normal;color:var(--fg)}
+.stt.publicado,.stt.listo{background:var(--inv-bg);color:var(--inv-fg);border-color:var(--inv-bg)}
+.stt.idea{border-color:var(--line);color:var(--muted)}
+.next{flex-shrink:0;align-self:center}
+.empty{padding:28px 0;color:var(--muted);border-bottom:1px solid var(--line)}
+.empty .row{margin-top:14px}
+.tools{display:flex;gap:10px;margin-bottom:8px}
+.tools input{flex:1;min-width:0}
+.tools select{width:auto;max-width:46%}
+
+/* ---------- guiones ---------- */
+.script{border:1px solid var(--line);border-radius:18px;padding:20px}
+.script.feature{border-color:var(--fg);border-width:1.5px}
+.script h3{font-size:22px;margin:6px 0 14px}
+.part{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.part .k{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.part p{margin:0;white-space:pre-line}
+.script .row{margin-top:16px}
+.stack{display:flex;flex-direction:column;gap:16px}
+
+/* ---------- drive / consejos ---------- */
+.lnk{display:flex;align-items:center;gap:14px;padding:18px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.lnk .b{flex:1;min-width:0} .lnk b{font-size:17px}
+.lnk.off{color:var(--faint)}
+.prose h2{font-size:20px;margin:36px 0 10px}
+.prose ul,.prose ol{margin:0;padding-left:20px}
+.prose li{margin-bottom:9px}
+.cl{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px}
+.cl span{min-width:0;overflow-wrap:anywhere}
+
+/* ---------- formularios ---------- */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.field>label{font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+input[type=text],input[type=url],input[type=date],textarea,select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font-size:16px}
+input:focus,textarea:focus,select:focus{border-color:var(--fg);outline:none}
+textarea{min-height:72px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pl b{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase}
+.mini{border:0;background:none;font-size:13px;font-weight:600;text-decoration:underline;text-underline-offset:3px;padding:2px 0}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:500}
+.chip.on{background:var(--inv-bg);color:var(--inv-fg);border-color:var(--inv-bg)}
+
+/* ---------- hojas ---------- */
+.sheetbg{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-width:640px;max-height:92vh;overflow-y:auto;border-radius:22px 22px 0 0;
+  padding:22px max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.sh h2{font-size:24px}
+.x{border:1px solid var(--line);background:var(--bg);width:38px;height:38px;border-radius:50%;font-size:18px}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.acts>*{flex:1 1 150px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,14px);opacity:0;transition:.2s;z-index:120;
+  background:var(--inv-bg);color:var(--inv-fg);padding:11px 20px;border-radius:999px;font-size:14px;font-weight:600;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (max-width:420px){.part{grid-template-columns:1fr;gap:2px}.sc .txt b{font-size:22px}}
+@media (prefers-reduced-motion:reduce){.sc .arr,.toast{transition:none}}
+.login{min-height:100vh;display:flex;align-items:center}
+.login form{width:100%}
+.login h1{font-size:clamp(34px,9vw,48px);font-weight:800;line-height:1.02;margin:14px 0 28px}
+.err{color:var(--fg);font-weight:600;font-size:14px;margin:12px 0 0}
+input[type=email],input[type=password]{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font-size:16px}
+.rd-part{padding:16px 0;border-top:1px solid var(--line)}
+.rd-part .eyebrow{margin-bottom:6px}
+.rd-part p{margin:0;font-size:19px;line-height:1.45;white-space:pre-line}
+.rd-part.note p{font-size:16px;color:var(--muted)}
+.when{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.share{border:1px solid var(--fg);border-radius:16px;padding:18px;margin-bottom:28px}
+.share code{display:block;font-size:13px;overflow-wrap:anywhere;margin:8px 0 12px;color:var(--muted)}
+.fab{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:80;width:60px;height:60px;border-radius:50%;border:0;background:var(--inv-bg);color:var(--inv-fg);display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.fab svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fab .dot{position:absolute;top:-3px;right:-3px;min-width:24px;height:24px;padding:0 6px;border-radius:12px;background:#E0453A;color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center;border:2px solid var(--bg)}
+.toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+.msgs{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.msg{display:flex;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
+.av{width:34px;height:34px;border-radius:50%;color:#fff;font-weight:700;display:grid;place-items:center;flex-shrink:0;font-size:15px}
+.msg .b{flex:1;min-width:0}
+.msg .who{font-size:13px;font-weight:700}
+.msg .who span{font-weight:500;color:var(--muted)}
+.msg p{margin:4px 0 0;white-space:pre-line;overflow-wrap:anywhere}
+.msg .vid{display:inline-block;margin-top:8px;font-size:13px;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:none}
+.msg .done{align-self:flex-start;flex-shrink:0}
+.msg.mine .who{opacity:.9}
+.newdot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#E0453A;margin-left:6px;vertical-align:1px}
+.compose{position:sticky;bottom:calc(-24px - env(safe-area-inset-bottom,0px));background:var(--bg);padding-top:14px;margin-top:6px}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}</style>
+</head>
+<body>
+<div class="wrap login" id="login" hidden>
+  <form id="login-form">
+    <div class="eyebrow">Salón 66</div>
+    <h1>Gestión de redes sociales</h1>
+    <div class="field"><label for="lg-email">Email</label><input type="email" id="lg-email" autocomplete="username" required></div>
+    <div class="field"><label for="lg-pass">Contraseña</label><input type="password" id="lg-pass" autocomplete="current-password" required></div>
+    <button class="btn solid" style="width:100%;margin-top:8px" id="lg-btn">Entrar</button>
+    <p class="err" id="lg-err" hidden>Email o contraseña incorrectos.</p>
+  </form>
+</div>
+<div class="wrap" id="app" hidden>
+  <button class="fab" id="fab" aria-label="Apuntes del equipo"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"/></svg><span class="dot" id="fab-dot" hidden></span></button>
+  <div class="note" id="local-note" hidden>Sin conexión con el almacén compartido: lo que guardes ahora solo se queda en este dispositivo.</div>
+
+  <!-- ============ INICIO ============ -->
+  <section class="page home" id="p-inicio">
+    <header class="home-head">
+      <div class="eyebrow" id="biz">Salón 66</div>
+      <h1>Gestión de redes sociales</h1>
+      <div class="date" id="today-line"></div>
+    </header>
+    <nav class="shortcuts" aria-label="Accesos directos">
+      <button class="sc" data-go="calendario"><span class="num">01</span><span class="txt"><b>Calendario de contenido</b><span id="h-cal">Lo que sale cada día del mes</span></span><span class="arr">→</span></button>
+      <button class="sc" data-go="ideas"><span class="num">02</span><span class="txt"><b>Lista de ideas</b><span id="h-ideas">Ideas de contenido guardadas</span></span><span class="arr">→</span></button>
+      <button class="sc" data-go="diaadia"><span class="num">03</span><span class="txt"><b>Día a día</b><span id="h-dia">Pendiente de grabar, editar y publicar</span></span><span class="arr">→</span></button>
+      <button class="sc" data-go="genideas"><span class="num">04</span><span class="txt"><b>Generador de ideas</b><span>Ideas nuevas de contenido en un toque</span></span><span class="arr">→</span></button>
+    </nav>
+    <div class="home-foot">
+      <button data-go="guiones">Generador de guiones</button>
+      <button data-go="drive">Vídeos en Drive</button>
+      <button data-go="consejos">Consejos</button>
+      <button data-go="ajustes">Ajustes</button>
+    </div>
+  </section>
+
+  <!-- ============ CALENDARIO ============ -->
+  <section class="page" id="p-calendario" hidden>
+    <div class="bar"><button class="back" data-go="inicio">← Inicio</button><button class="btn sm solid" id="add-day">+ Contenido</button></div>
+    <div class="calnav"><h2 id="cal-title"></h2><div class="arrows"><button class="circle" id="prev" aria-label="Mes anterior">‹</button><button class="circle" id="next" aria-label="Mes siguiente">›</button></div></div>
+    <div class="grid" id="grid"></div>
+    <div class="cal-key"><span><i class="k-under"></i>Día de publicar</span><span><i class="k-dot"></i>Contenido</span><span><i class="k-dot open"></i>Idea sin guion</span></div>
+    <div class="week"><div><div class="eyebrow">Esta semana</div><b id="week-txt"></b></div><div class="meter" id="meter"></div></div>
+    <div class="sec">
+      <div class="sec-h"><h2 id="day-title"></h2></div>
+      <div class="list" id="day-list"></div>
+    </div>
+    <div class="row" style="margin-top:28px;gap:22px">
+      <button class="link-btn" id="autoplan">Rellenar huecos del mes con ideas</button>
+      <button class="link-btn" id="today">Ir a hoy</button>
+    </div>
+  </section>
+
+  <!-- ============ IDEAS ============ -->
+  <section class="page" id="p-ideas" hidden>
+    <div class="bar"><button class="back" data-go="inicio">← Inicio</button><button class="btn sm solid" id="add-idea">+ Idea</button></div>
+    <div class="ph"><div class="eyebrow">Lista</div><h1>Ideas de contenido</h1><p>Lo que aún no tiene fecha. Abre una idea y ponle día para pasarla al calendario.</p></div>
+    <div class="tools"><input type="text" id="search" placeholder="Buscar"><select id="idea-filter" aria-label="Tipo"></select></div>
+    <div class="list" id="idea-list" style="margin-top:12px"></div>
+    <div class="row" style="margin-top:24px"><button class="link-btn" data-go="guiones">Sacar ideas del generador de guiones →</button></div>
+  </section>
+
+  <!-- ============ GENERADOR DE IDEAS ============ -->
+  <section class="page" id="p-genideas" hidden>
+    <div class="bar"><button class="back" data-go="inicio">← Inicio</button></div>
+    <div class="ph"><div class="eyebrow">Generador</div><h1>Ideas nuevas</h1><p>Pide ideas de contenido y guarda en tu lista las que te gusten.</p></div>
+    <div class="field"><label for="gi-topic">Sobre qué (opcional)</label><input type="text" id="gi-topic" placeholder="Ej. degradados, Navidad, barbas"></div>
+    <div class="field"><label for="gi-type">Tipo de contenido</label><select id="gi-type"></select></div>
+    <button class="btn solid" id="gi-go" style="width:100%">Generar 5 ideas</button>
+    <p class="small muted" id="gi-status" style="margin:14px 0 0"></p>
+    <div class="list" id="gi-list" style="margin-top:12px" hidden></div>
+  </section>
+
+  <!-- ============ DÍA A DÍA ============ -->
+  <section class="page" id="p-diaadia" hidden>
+    <div class="bar"><button class="back" data-go="inicio">← Inicio</button></div>
+    <div class="ph"><div class="eyebrow">Día a día</div><h1>Pendientes</h1><p>Lo que toca hoy y lo que falta por grabar, editar o publicar. Toca un vídeo para ver su guion.</p></div>
+    <div id="dia"></div>
+  </section>
+
+  <!-- ============ GUIONES ============ -->
+  <section class="page" id="p-guiones" hidden>
+    <div class="bar"><button class="back" data-go="inicio">← Inicio</button></div>
+    <div class="ph"><div class="eyebrow">Generador</div><h1>Guiones</h1><p>Gancho, entrada, desarrollo, cierre y llamada a la acción. Elige un tema y guárdalo en tus ideas.</p></div>
+    <div class="field"><label for="gen-type">Tema</label><select id="gen-type"></select></div>
+    <div id="gen-out"></div>
+    <div class="sec"><div class="sec-h"><h2>Todos los guiones</h2><span class="count" id="tpl-count"></span></div>
+      <div class="field"><select id="tpl-filter" aria-label="Filtrar guiones"></select></div>
+      <div class="stack" id="tpl-list"></div></div>
+  </section>
+
+  <!-- ============ DRIVE ============ -->
+  <section class="page" id="p-drive" hidden>
+    <div class="bar"><button class="back" data-go="inicio">← Inicio</button><button class="btn sm ghost" data-go="ajustes">Editar enlaces</button></div>
+    <div class="ph"><div class="eyebrow">Google Drive</div><h1>Vídeos</h1></div>
+    <div class="list" id="drive-links"></div>
+    <div class="prose">
+      <h2>Cómo organizarlo</h2>
+      <ol>
+        <li>Crea un Gmail nuevo solo para las redes del salón. Así el Drive es del negocio, no de una persona.</li>
+        <li>Crea la carpeta <b>Redes</b> con cuatro subcarpetas: <b>1 Brutos</b>, <b>2 Para editar</b>, <b>3 Editados</b>, <b>4 Publicados</b>.</li>
+        <li>No pases la contraseña. Comparte las carpetas con el correo de cada persona: tu jefe y tú como Editor en todo; el editor de vídeo solo en "2 Para editar" y "3 Editados".</li>
+        <li>Sube los vídeos desde la app de Google Drive del móvil: van en calidad original.</li>
+        <li>Pega aquí los enlaces de las carpetas (Editar enlaces) y en cada contenido el enlace de su vídeo.</li>
+        <li>Nombra los archivos con fecha y tema, por ejemplo <b>2026-11-04_degradado.mp4</b>.</li>
+      </ol>
+    </div>
+    <div id="drive-vids" style="margin-top:28px"></div>
+  </section>
+
+  <!-- ============ CONSEJOS ============ -->
+  <section class="page" id="p-consejos" hidden>
+    <div class="bar"><button class="back" data-go="inicio">← Inicio</button></div>
+    <div class="ph"><div class="eyebrow">Estrategia</div><h1>Consejos</h1></div>
+    <div class="prose" id="tips"></div>
+  </section>
+
+  <!-- ============ AJUSTES ============ -->
+  <section class="page" id="p-ajustes" hidden>
+    <div class="bar"><button class="back" data-go="inicio">← Inicio</button></div>
+    <div class="ph"><div class="eyebrow">Configuración</div><h1>Ajustes</h1></div>
+    <div class="field"><label for="s-biz">Nombre del negocio</label><input type="text" id="s-biz" placeholder="Salón 66"></div>
+    <div class="field"><label for="s-city">Ciudad (para hashtags)</label><input type="text" id="s-city" placeholder="Ej. Valencia"></div>
+    <div class="field"><label>Días de publicación</label><div class="chips" id="s-days"></div></div>
+    <div class="field"><label for="s-drive_main">Carpeta Redes</label><input type="url" id="s-drive_main" placeholder="https://drive.google.com/…"></div>
+    <div class="field"><label for="s-drive_raw">1 Brutos</label><input type="url" id="s-drive_raw" placeholder="https://drive.google.com/…"></div>
+    <div class="field"><label for="s-drive_edit">2 Para editar</label><input type="url" id="s-drive_edit" placeholder="https://drive.google.com/…"></div>
+    <div class="field"><label for="s-drive_done">3 Editados</label><input type="url" id="s-drive_done" placeholder="https://drive.google.com/…"></div>
+    <div class="field"><label for="s-drive_pub">4 Publicados</label><input type="url" id="s-drive_pub" placeholder="https://drive.google.com/…"></div>
+    <div class="field"><label for="s-ig">Instagram</label><input type="url" id="s-ig" placeholder="https://instagram.com/…"></div>
+    <div class="field"><label for="s-tt">TikTok</label><input type="url" id="s-tt" placeholder="https://tiktok.com/@…"></div>
+    <button class="btn solid" id="save-settings" style="width:100%;margin-top:8px">Guardar ajustes</button>
+    <button class="link-btn" onclick="logout()" style="margin-top:28px">Cerrar sesión</button>
+  </section>
+</div>
+
+<!-- ============ EDITOR ============ -->
+<div class="sheetbg" id="editor" hidden>
+  <div class="sheet" role="dialog" aria-labelledby="ed-h">
+    <div class="sh"><h2 id="ed-h">Contenido</h2><button class="x" data-close="editor" aria-label="Cerrar">×</button></div>
+    <div class="field"><label for="ed-title">Título o tema</label><input type="text" id="ed-title" placeholder="Ej. Degradado paso a paso"></div>
+    <div class="two">
+      <div class="field"><label for="ed-pillar">Tipo</label><select id="ed-pillar"></select></div>
+      <div class="field"><label for="ed-format">Formato</label><select id="ed-format"></select></div>
+      <div class="field"><label for="ed-status">Estado</label><select id="ed-status"></select></div>
+      <div class="field"><label for="ed-date">Fecha</label><input type="date" id="ed-date"></div>
+    </div>
+    <div class="row" style="margin-bottom:20px;gap:20px">
+      <button class="mini" id="ed-fill">Rellenar con un guion</button>
+      <button class="mini" id="ed-nodate">Quitar fecha</button>
+    </div>
+    <div class="field"><label for="ed-ref">Vídeo de referencia (TikTok, Instagram…)<a class="mini" id="ed-ref-open" href="#" target="_blank" rel="noopener" hidden>Abrir ↗</a></label><input type="url" id="ed-ref" placeholder="Pega aquí el enlace del vídeo que te ha gustado"></div>
+    <div class="field"><label class="pl" for="ed-hook"><b>1 · Gancho</b><button class="mini" data-swap="hook">Otro</button></label><textarea id="ed-hook" placeholder="La frase de los primeros 3 segundos"></textarea></div>
+    <div class="field"><label class="pl" for="ed-intro"><b>2 · Entrada</b></label><textarea id="ed-intro" placeholder="De qué va, en una frase"></textarea></div>
+    <div class="field"><label class="pl" for="ed-body"><b>3 · Desarrollo</b></label><textarea id="ed-body" style="min-height:110px" placeholder="Los pasos o el proceso"></textarea></div>
+    <div class="field"><label class="pl" for="ed-closing"><b>4 · Cierre</b><button class="mini" data-swap="closing">Otro</button></label><textarea id="ed-closing" placeholder="El resultado o el remate"></textarea></div>
+    <div class="field"><label class="pl" for="ed-cta"><b>5 · Llamada a la acción</b><button class="mini" data-swap="cta">Otra</button></label><textarea id="ed-cta" placeholder="Si te ha gustado, síguenos para más"></textarea></div>
+    <div class="field"><label for="ed-caption">Texto de la publicación</label><textarea id="ed-caption" style="min-height:96px"></textarea></div>
+    <div class="field"><label for="ed-hashtags">Hashtags <button class="mini" id="ed-tags">Sugerir</button></label><textarea id="ed-hashtags" style="min-height:50px"></textarea></div>
+    <div class="field"><label for="ed-drive">Enlace del vídeo en Drive</label><input type="url" id="ed-drive" placeholder="https://drive.google.com/…"></div>
+    <div class="field"><label for="ed-notes">Notas de grabación</label><textarea id="ed-notes"></textarea></div>
+    <div class="acts">
+      <button class="btn ghost" id="ed-copy-script">Copiar guion</button>
+      <button class="btn ghost" id="ed-copy-cap">Copiar texto</button>
+      <a class="btn ghost" id="ed-open" href="#" target="_blank" rel="noopener" hidden>Abrir vídeo ↗</a>
+    </div>
+    <div class="acts">
+      <button class="btn ghost" id="ed-del">Eliminar</button>
+      <button class="btn ghost" id="ed-dup">Duplicar</button>
+      <button class="btn ghost" id="ed-note">Apunte</button>
+      <button class="btn solid" id="ed-save">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="sheetbg" id="reader" hidden>
+  <div class="sheet" role="dialog" aria-labelledby="rd-title">
+    <div class="sh"><div class="eyebrow" id="rd-date"></div><button class="x" data-close="reader" aria-label="Cerrar">×</button></div>
+    <h2 id="rd-title" style="font-size:28px;line-height:1.1;margin-bottom:6px"></h2>
+    <div class="muted small" id="rd-meta"></div>
+    <a class="btn solid" id="rd-ref" href="#" target="_blank" rel="noopener" style="width:100%;margin-top:16px" hidden>Ver vídeo de referencia ↗</a>
+    <div id="rd-parts" style="margin-top:20px"></div>
+    <div class="field" style="margin-top:22px"><label for="rd-link">Enlace del vídeo en Drive (opcional)</label><input type="url" id="rd-link" placeholder="Pega aquí el enlace cuando lo subas"></div>
+    <div class="acts"><a class="btn ghost" id="rd-upload" href="#" target="_blank" rel="noopener">Abrir Drive para subirlo ↗</a><button class="btn ghost" id="rd-copy">Copiar guion</button></div>
+    <div class="acts"><button class="btn ghost" id="rd-note">Añadir apunte</button><button class="btn ghost" id="rd-edit">Editar</button><button class="btn solid" id="rd-done">Ya lo he grabado y subido</button></div>
+  </div>
+</div>
+<div class="sheetbg" id="chat" hidden>
+  <div class="sheet" role="dialog" aria-labelledby="ch-h">
+    <div class="sh"><div><div class="eyebrow">Equipo</div><h2 id="ch-h">Apuntes</h2></div><button class="x" data-close="chat" aria-label="Cerrar">×</button></div>
+    <p class="small muted" style="margin:-6px 0 14px">Ideas, cambios o cosas que faltan. Pulsa Hecho cuando esté resuelto y se borra.</p>
+    <div class="msgs" id="ch-list"></div>
+    <div class="compose">
+      <div id="ch-name-box" hidden>
+        <div class="field"><label for="ch-name">¿Cómo te llamas? (sale junto a tus apuntes)</label><input type="text" id="ch-name" placeholder="Tu nombre"></div>
+      </div>
+      <div class="field"><label for="ch-item">Sobre qué vídeo (opcional)</label><select id="ch-item"></select></div>
+      <div class="field" style="margin-bottom:10px"><label for="ch-text">Apunte</label><textarea id="ch-text" placeholder="Ej. En este vídeo falta el plano del resultado de perfil"></textarea></div>
+      <button class="btn solid" id="ch-send" style="width:100%">Enviar apunte</button>
+    </div>
+  </div>
+</div>
+<div class="sheetbg" id="picker" hidden>
+  <div class="sheet"><div class="sh"><h2 id="pk-h">Elegir</h2><button class="x" data-close="picker" aria-label="Cerrar">×</button></div><div class="list" id="pk-list"></div></div>
+</div>
+<div class="sheetbg" id="confirm" hidden>
+  <div class="sheet" style="max-width:480px"><h2 id="cf-msg" style="font-size:21px;margin-bottom:20px"></h2>
+    <div class="acts"><button class="btn ghost" id="cf-no">Cancelar</button><button class="btn solid" id="cf-yes">Sí</button></div></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+/* ============================== CATÁLOGOS ============================== */
+const PILLARS={consejos:'Consejos',antes:'Antes y después',proceso:'Proceso',tendencias:'Tendencias',clientes:'Clientes y reseñas',equipo:'Equipo',humor:'Humor',promo:'Agenda y promos'};
+const FORMATS={reel:'Reel',carrusel:'Carrusel',stories:'Stories',foto:'Foto',tiktok:'TikTok',directo:'Directo'};
+const STATUSES={idea:'Idea',guion:'Guion listo',grabar:'Por grabar',edicion:'En edición',listo:'Listo',publicado:'Publicado'};
+const NEXT={guion:['grabar','Pasar a por grabar'],grabar:['edicion','Ya está grabado'],edicion:['listo','Ya está editado'],listo:['publicado','Marcar publicado']};
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+
+const HOOKS={
+  consejos:['El error que hace que tu corte dure la mitad.','3 cosas que tienes que decirle a tu peluquero antes de sentarte.','Si tienes remolino aquí, no te hagas este corte.','Deja de lavarte el pelo así.','Cómo pedir el corte que quieres en 10 segundos.'],
+  antes:['Mira el cambio. Sin filtros.','Entró pidiendo "solo las puntas"…','De esto a esto en 40 minutos.','Desliza para ver el después.','¿Antes o después? Comenta.'],
+  proceso:['Así se hace un degradado de principio a fin.','El paso que casi nadie ve.','Satisfying: perfilado a navaja.','POV: te sientas en la silla y dices "lo de siempre".','Tijera o máquina: mira la diferencia.'],
+  tendencias:['El corte que más nos están pidiendo este mes.','Este corte va a estar en todas partes este año.','¿Te atreves con esto?','3 cortes que siempre quedan bien.','Probamos el corte viral para que tú no tengas que hacerlo.'],
+  clientes:['Lo que dijo al verse en el espejo…','Esta reseña nos alegró el día.','Él lo explica mejor que nosotros.','Viene cada 3 semanas desde hace 5 años.','"Nunca me había quedado así de bien".'],
+  equipo:['Un día cualquiera en el salón.','Te presentamos al equipo.','Lo que pasa antes de abrir la puerta.','Así empezó todo.','Lo que no se ve detrás de un buen corte.'],
+  humor:['Tipos de clientes que entran por la puerta (¿cuál eres?)','Cuando el cliente enseña una foto de Pinterest y tiene otro pelo…','"Solo las puntas". Las puntas:','Nadie: … Peluqueros un sábado a las 10:','El cliente que se mueve justo al pasar la navaja.'],
+  promo:['Quedan pocos huecos esta semana.','Si llevas tiempo pensándolo, esta es tu señal.','Ven con un amigo y os sale mejor.','Agenda abierta. Te contamos cómo reservar.','El regalo que sí se usa: regala un corte.']
+};
+const CLOSINGS=['Un buen corte no se nota: se nota que te ves mejor.','Cada corte se adapta a tu cara y a tu tipo de pelo.','La clave está en escuchar lo que quiere el cliente.','Y sales listo sin tener que peinarte media hora.','Si dudas, pregunta antes: te aconsejamos sin compromiso.','Hecho a tu medida, como debe ser.'];
+const CTAS=['Si te ha gustado, síguenos para más.','Guárdalo para tu próxima visita y compártelo con quien lo necesite.','Escríbenos "CORTE" por privado y te decimos cuál te va.','Reserva desde el enlace de la bio.','Comenta qué corte quieres ver la próxima vez.','Etiqueta a ese amigo que necesita un cambio ya.','Síguenos para la parte 2.','¿Dudas? Déjalas en comentarios y las respondemos en otro vídeo.'];
+
+const TEMPLATES=[
+ {pillar:'consejos',format:'reel',title:'Cómo pedir el corte que quieres',hook:'Cómo pedir el corte que quieres en 10 segundos.',intro:'La mitad de los cortes que salen mal es porque no nos entendemos.',body:'1. Trae una foto, mejor de alguien con un pelo parecido al tuyo.\n2. Di cuánto quieres quitar con los dedos, no con centímetros.\n3. Cuenta cómo te peinas cada día.\n4. Di lo que NO quieres.',closing:'Con eso, aciertas a la primera.',cta:'Guárdalo para tu próxima visita.',notes:'Peluquero a cámara. Texto grande con cada paso.'},
+ {pillar:'consejos',format:'carrusel',title:'5 errores al lavarte el pelo',hook:'Deja de lavarte el pelo así.',intro:'Errores que estropean el corte y el pelo.',body:'1. Agua muy caliente.\n2. Champú en todo el largo en vez de en la raíz.\n3. Frotar con la toalla.\n4. Saltarte el acondicionador.\n5. Secar sin protector de calor.',closing:'Pequeños cambios, pelo mucho mejor.',cta:'Guárdalo y compártelo con quien lo haga.',notes:'Portada + 5 diapositivas + cierre con llamada a la acción.'},
+ {pillar:'consejos',format:'reel',title:'Cada cuánto cortarse el pelo',hook:'¿Cada cuánto deberías venir? Depende del corte.',intro:'No es lo mismo un degradado que una melena.',body:'Degradado o pelo muy corto: cada 2-3 semanas.\nCorte clásico: cada 4-6 semanas.\nMelena o pelo largo: cada 8-12 semanas para sanear puntas.',closing:'Si esperas demasiado, el corte pierde la forma.',cta:'Comenta qué corte llevas y te decimos cada cuánto.',notes:''},
+ {pillar:'consejos',format:'reel',title:'Qué corte según tu cara',hook:'Dime tu forma de cara y te digo tu corte.',intro:'Redonda, alargada, cuadrada u ovalada.',body:'Redonda: volumen arriba y laterales cortos.\nAlargada: evita mucho volumen arriba, mejor flequillo.\nCuadrada: capas suaves para romper líneas.\nOvalada: te queda casi todo.',closing:'¿Cuál es la tuya?',cta:'Guárdalo y comenta tu forma de cara.',notes:'Gráficos sencillos o filtro de forma de cara.'},
+ {pillar:'antes',format:'reel',title:'Transformación completa',hook:'Mira el cambio. Sin filtros.',intro:'Llevaba meses sin cortarse y quería un cambio de verdad.',body:'Antes, durante y resultado final.',closing:'Otra persona.',cta:'Reserva desde el enlace de la bio.',notes:'Mismo ángulo y misma luz antes y después. Transición con chasquido o tapando la cámara.'},
+ {pillar:'antes',format:'carrusel',title:'Antes y después en 4 fotos',hook:'Desliza para ver el después.',intro:'Así cambia un corte bien hecho.',body:'Foto 1: antes de frente.\nFoto 2: antes de perfil.\nFoto 3: después de frente.\nFoto 4: después de perfil.',closing:'El perfil es donde se nota de verdad.',cta:'¿Cuál es tu favorita? Comenta.',notes:''},
+ {pillar:'antes',format:'reel',title:'Solo las puntas',hook:'Entró pidiendo "solo las puntas"…',intro:'Y salió con esto.',body:'Antes, la cara del cliente al ver la propuesta y el resultado.',closing:'A veces el cambio es justo lo que hacía falta.',cta:'Etiqueta a ese amigo que necesita un cambio ya.',notes:'Pedir permiso al cliente. Tono divertido.'},
+ {pillar:'proceso',format:'reel',title:'Degradado de principio a fin',hook:'Así se hace un degradado de principio a fin.',intro:'Paso a paso, sin cortes.',body:'1. Marcar la línea.\n2. Máquina en los laterales.\n3. Difuminar la transición.\n4. Arriba con tijera.\n5. Perfilado y acabado.',closing:'40 minutos y listo.',cta:'Si te ha gustado, síguenos para más.',notes:'Planos de 2-3 s. Acelerar las partes largas.'},
+ {pillar:'proceso',format:'reel',title:'Perfilado a navaja',hook:'Satisfying: perfilado a navaja.',intro:'',body:'Primer plano del perfilado de barba o nuca, con el sonido real.',closing:'El detalle que lo cambia todo.',cta:'Guárdalo si te ha relajado.',notes:'Sin música, solo el sonido de la navaja. Muy cerca.'},
+ {pillar:'proceso',format:'stories',title:'Preparando el salón',hook:'Buenos días desde Salón 66.',intro:'Así lo preparamos todo antes de abrir.',body:'Limpieza, herramientas desinfectadas, café…',closing:'Todo listo para el primero del día.',cta:'Encuesta: ¿enseñamos nuestras herramientas?',notes:'4-5 stories seguidas con encuesta al final.'},
+ {pillar:'tendencias',format:'reel',title:'El corte más pedido del mes',hook:'El corte que más nos están pidiendo este mes.',intro:'Si lo has visto en todas partes, te contamos qué es.',body:'Nombre del corte, para quién funciona, cuánto mantenimiento necesita y cómo peinarlo.',closing:'¿Te animas?',cta:'Comenta "YO" si te lo harías.',notes:''},
+ {pillar:'tendencias',format:'carrusel',title:'3 cortes que siempre funcionan',hook:'3 cortes que siempre quedan bien.',intro:'Para cuando no sabes qué pedir.',body:'Corte 1: para quién y foto.\nCorte 2: para quién y foto.\nCorte 3: para quién y foto.',closing:'Clásicos por algo.',cta:'Guárdalo para tu próxima visita.',notes:''},
+ {pillar:'tendencias',format:'reel',title:'Probamos el corte viral',hook:'Probamos el corte viral para que tú no tengas que hacerlo.',intro:'Lo hemos visto en TikTok y lo hemos hecho.',body:'Proceso rápido y resultado. ¿Funciona en la vida real?',closing:'Veredicto: sí, no o depende del pelo.',cta:'¿Qué corte probamos ahora? Comenta.',notes:'Audio en tendencia.'},
+ {pillar:'clientes',format:'reel',title:'Reacción en el espejo',hook:'Lo que dijo al verse en el espejo…',intro:'Nuestro momento favorito.',body:'Clip real de la reacción.',closing:'Por esto hacemos lo que hacemos.',cta:'Síguenos para más cambios.',notes:'Pedir permiso. Grabar sin preparar.'},
+ {pillar:'clientes',format:'foto',title:'Reseña de Google',hook:'Esta reseña nos alegró el día.',intro:'Captura de una reseña real.',body:'Dar las gracias y contar qué se le hizo.',closing:'Gracias por confiar en nosotros.',cta:'¿Ya has venido? Déjanos tu reseña.',notes:'Diseño sencillo con la reseña en grande.'},
+ {pillar:'clientes',format:'reel',title:'Mini entrevista a un cliente',hook:'Le preguntamos a un cliente lo que tú no te atreves a preguntar.',intro:'¿Por qué vienes aquí? ¿Qué te haces siempre? ¿Lo recomendarías?',body:'Tres preguntas rápidas con respuestas cortas.',closing:'Él lo explica mejor que nosotros.',cta:'Reserva desde el enlace de la bio.',notes:'Micro de solapa si es posible.'},
+ {pillar:'equipo',format:'reel',title:'Te presentamos al equipo',hook:'Te presentamos al equipo.',intro:'Las caras detrás de cada corte.',body:'Cada persona: nombre, especialidad y el corte que más le gusta hacer.',closing:'Ya nos conoces un poco más.',cta:'Si te ha gustado, síguenos.',notes:'Un plano corto por persona.'},
+ {pillar:'equipo',format:'reel',title:'Un día en el salón',hook:'Un día cualquiera en el salón.',intro:'De la apertura al cierre.',body:'Café, primer cliente, hora punta, comida rápida, último corte, limpiar.',closing:'Cansados pero contentos.',cta:'¿Os gusta este tipo de vídeo? Comentad y hacemos más.',notes:'Clips de 1-2 s con la hora en pantalla.'},
+ {pillar:'equipo',format:'stories',title:'Preguntas y respuestas',hook:'Hoy respondemos vuestras dudas.',intro:'Sticker de preguntas abierto todo el día.',body:'Responder 5-8 preguntas en vídeo.',closing:'Gracias por tantas preguntas.',cta:'Las mejores van a destacadas.',notes:'Apunta las preguntas en la lista de ideas: son vídeos futuros.'},
+ {pillar:'humor',format:'reel',title:'Tipos de clientes',hook:'Tipos de clientes que entran por la puerta (¿cuál eres?)',intro:'',body:'El que trae 20 fotos.\nEl que dice "lo que veas".\nEl que no para de hablar.\nEl que se duerme.',closing:'Y a todos los queremos igual.',cta:'Etiqueta al que es el número 2.',notes:'El equipo actuando cada tipo. Audio viral.'},
+ {pillar:'humor',format:'reel',title:'La foto de Pinterest',hook:'Cuando el cliente enseña una foto de Pinterest y tiene otro pelo…',intro:'',body:'Foto de referencia, cara del peluquero, resultado adaptado a su pelo.',closing:'Spoiler: le encantó.',cta:'Síguenos para más.',notes:''},
+ {pillar:'promo',format:'reel',title:'Ven con un amigo',hook:'Ven con un amigo y os sale mejor.',intro:'Promoción para venir acompañado.',body:'Qué incluye, precio y cómo reservar.',closing:'Mejor en compañía.',cta:'Etiqueta al amigo con el que vendrías.',notes:'Grabar con dos clientes reales.'},
+ {pillar:'promo',format:'stories',title:'Huecos libres esta semana',hook:'Quedan pocos huecos esta semana.',intro:'Estos son los días y horas libres.',body:'Captura de la agenda con los huecos.',closing:'Cuando se llenen, no hay más.',cta:'Reserva por privado o desde el enlace.',notes:'Sticker de enlace.'},
+ {pillar:'promo',format:'carrusel',title:'Tarjeta regalo',hook:'El regalo que sí se usa: regala un corte.',intro:'Para Navidad, cumpleaños o el Día del Padre.',body:'Cómo funciona, qué se puede regalar y cómo conseguirla.',closing:'Un regalo que se nota.',cta:'Escríbenos por privado para pedir la tuya.',notes:'Foto o diseño de la tarjeta.'}
+];
+
+/* ============================== ESTADO ============================== */
+let ITEMS=[], SETTINGS={}, MODE='loading', DB=null;
+let cal=new Date(); cal.setDate(1);
+let selDay=ymd(new Date()), view='inicio', editing=null, gCur=null;
+
+const $=id=>document.getElementById(id);
+function ymd(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function pd(s){const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)}
+function nice(s){const d=pd(s);return `${DIAS[d.getDay()]} ${d.getDate()} de ${MESES[d.getMonth()]}`}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function rnd(a){return a[Math.floor(Math.random()*a.length)]}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function pubDays(){return Array.isArray(SETTINGS.pub_days)?SETTINGS.pub_days:[1,3,5]}
+function on(day){return ITEMS.filter(i=>i.date===day)}
+function addDays(d,n){return new Date(d.getFullYear(),d.getMonth(),d.getDate()+n)}
+function weekStart(d){return addDays(d,-((d.getDay()+6)%7))}
+function weekCount(){const ws=weekStart(new Date());let n=0;for(let i=0;i<7;i++)n+=on(ymd(addDays(ws,i))).length;return n}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200)}
+
+/* ============================== ALMACÉN (Supabase) ============================== */
+/* Pega aquí los datos de tu proyecto: Supabase → Project Settings → API */
+const SUPABASE_URL='https://ltffptkrlhsjnzpaoudd.supabase.co';
+const SUPABASE_KEY='sb_publishable_1aN2KM7Vr0tBmIs1O2JjUw_jzaq4y7G';
+let sb=null;
+const LS='redes-salon66-v1';
+function lsLoad(){try{const o=JSON.parse(localStorage.getItem(LS)||'{}');ITEMS=o.items||[];SETTINGS=o.settings||{}}catch(e){}}
+function lsSave(){try{localStorage.setItem(LS,JSON.stringify({items:ITEMS,settings:SETTINGS}))}catch(e){}}
+function showApp(){$('login').hidden=true;$('app').hidden=false}
+function showLogin(){$('app').hidden=true;$('login').hidden=false}
+async function connect(){
+  if(!window.supabase||SUPABASE_URL.startsWith('PEGA')){
+    MODE='local';lsLoad();$('local-note').hidden=false;
+    $('local-note').textContent='Falta conectar la base de datos. De momento lo que guardes solo se queda en este dispositivo.';
+    showApp();applyBiz();render();whoAmI().then(loadNotes);return}
+  sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  const {data:{session}}=await sb.auth.getSession();
+  if(session)startDb();else showLogin();
+}
+async function startDb(){
+  MODE='db';showApp();render();await whoAmI();await loadAll();loadNotes();
+  sb.channel('cambios')
+    .on('postgres_changes',{event:'*',schema:'public',table:'items'},()=>loadAll())
+    .on('postgres_changes',{event:'*',schema:'public',table:'settings'},()=>loadAll())
+    .on('postgres_changes',{event:'*',schema:'public',table:'notes'},()=>loadNotes())
+    .subscribe();
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden){loadAll();loadNotes()}});
+}
+let loading=null;
+async function loadAll(){
+  if(loading)return loading;
+  loading=(async()=>{
+    const [a,b]=await Promise.all([sb.from('items').select('id,data'),sb.from('settings').select('data').eq('id','main').maybeSingle()]);
+    if(a.error){toast('No se pudieron cargar los datos. Revisa la conexión.');return}
+    ITEMS=a.data.map(r=>({...r.data,id:r.id}));SETTINGS=(b.data&&b.data.data)||{};
+    applyBiz();if(view!=='ajustes')render();
+  })();
+  try{await loading}finally{loading=null}
+}
+async function saveItem(it){
+  const id=it.id||uid(),body={...it,updated_at:new Date().toISOString()};delete body.id;
+  if(!body.created_at)body.created_at=body.updated_at;
+  const i=ITEMS.findIndex(x=>x.id===id),full={...body,id};
+  if(i>=0)ITEMS[i]=full;else ITEMS.push(full);
+  if(MODE==='db'){const {error}=await sb.from('items').upsert({id,data:body,updated_at:body.updated_at});if(error){toast('No se pudo guardar. Inténtalo otra vez.');return null}}
+  else lsSave();
+  return full;
+}
+async function delItem(id){ITEMS=ITEMS.filter(x=>x.id!==id);
+  if(MODE==='db'){const {error}=await sb.from('items').delete().eq('id',id);if(error){toast('No se pudo eliminar.');return false}}else lsSave();return true}
+async function saveSettings(o){SETTINGS={...SETTINGS,...o};
+  if(MODE==='db'){const {error}=await sb.from('settings').upsert({id:'main',data:SETTINGS});if(error){toast('No se pudieron guardar los ajustes.');return false}}else lsSave();return true}
+$('login-form').addEventListener('submit',async e=>{
+  e.preventDefault();$('lg-err').hidden=true;$('lg-btn').disabled=true;$('lg-btn').textContent='Entrando…';
+  const {error}=await sb.auth.signInWithPassword({email:$('lg-email').value.trim(),password:$('lg-pass').value});
+  $('lg-btn').disabled=false;$('lg-btn').textContent='Entrar';
+  if(error){$('lg-err').hidden=false;return}
+  startDb();
+});
+async function logout(){try{await sb.auth.signOut()}catch(e){}location.reload()}
+
+/* ============================== MODO GRABACIÓN ============================== */
+const TO_RECORD=['idea','guion','grabar'];
+let reading=null;
+function openReader(id){
+  const it=ITEMS.find(x=>x.id===id);if(!it)return;reading=id;
+  $('rd-date').textContent=it.date?cap(nice(it.date)):'Sin fecha';
+  $('rd-title').textContent=it.title;
+  $('rd-meta').textContent=`${PILLARS[it.pillar]||''} · ${FORMATS[it.format]||''}`;
+  const part=(l,v,c='')=>v?`<div class="rd-part ${c}"><div class="eyebrow">${l}</div><p>${esc(v)}</p></div>`:'';
+  $('rd-parts').innerHTML=part('1 · Gancho',it.hook)+part('2 · Entrada',it.intro)+part('3 · Desarrollo',it.body)+part('4 · Cierre',it.closing)+part('5 · Llamada a la acción',it.cta)+part('Cómo grabarlo',it.notes,'note')
+    ||'<p class="muted">Este contenido todavía no tiene guion.</p>';
+  $('rd-ref').hidden=!/^https?:\/\//.test(it.ref_url||'');if(it.ref_url)$('rd-ref').href=it.ref_url;
+  $('rd-link').value=it.drive_url||'';
+  const up=SETTINGS.drive_raw||SETTINGS.drive_main;
+  $('rd-upload').hidden=!/^https?:\/\//.test(up||'');if(up)$('rd-upload').href=up;
+  const pending=TO_RECORD.includes(it.status);
+  $('rd-done').disabled=!pending;$('rd-done').textContent=pending?'Ya lo he grabado y subido':'Grabado';
+  show('reader');
+}
+async function markRecorded(){
+  const it=ITEMS.find(x=>x.id===reading);if(!it)return;
+  const link=$('rd-link').value.trim();
+  if(await saveItem({...it,status:'edicion',drive_url:link||it.drive_url||''})){hide('reader');toast('Marcado como grabado. ¡Gracias!');render()}
+}
+
+/* ============================== APUNTES ============================== */
+let NOTES=[],ME={email:'',name:''};
+const NOTE_LS='redes66-notes',SEEN_LS='redes66-visto';
+const COLORS=['#2F6FED','#E0553D','#1E9E6A','#B15CD6','#D9961A','#0F8FA8','#D6457F','#6B7A2E'];
+function colorOf(k){let h=0;for(const c of String(k||'?'))h=(h*31+c.charCodeAt(0))>>>0;return COLORS[h%COLORS.length]}
+function getLS(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}}
+function setLS(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+async function whoAmI(){
+  if(MODE==='db'){try{const {data:{user}}=await sb.auth.getUser();ME={email:user?.email||'',name:user?.user_metadata?.name||''}}catch(e){}}
+  else ME={email:'este-dispositivo',name:getLS('redes66-nombre','')};
+}
+async function saveName(n){
+  ME.name=n;
+  if(MODE==='db'){try{await sb.auth.updateUser({data:{name:n}})}catch(e){}}else setLS('redes66-nombre',n);
+}
+async function loadNotes(){
+  if(MODE==='db'){const {data,error}=await sb.from('notes').select('*').order('created_at');if(!error)NOTES=data||[]}
+  else{try{NOTES=JSON.parse(getLS(NOTE_LS,'[]'))}catch(e){NOTES=[]}}
+  drawFab();if(!$('chat').hidden){markSeen();drawChat()}
+}
+function unread(){const seen=getLS(SEEN_LS,'');return NOTES.filter(n=>n.author_email!==ME.email&&(!seen||n.created_at>seen)).length}
+function markSeen(){const last=NOTES.reduce((m,n)=>n.created_at>m?n.created_at:m,'');setLS(SEEN_LS,last||new Date().toISOString())}
+function drawFab(){const u=unread();$('fab-dot').hidden=!u;$('fab-dot').textContent=u>9?'9+':u}
+function ago(iso){const d=new Date(iso),m=Math.round((Date.now()-d)/60000);
+  if(m<1)return'ahora';if(m<60)return`hace ${m} min`;const h=Math.round(m/60);if(h<24)return`hace ${h} h`;
+  return`${d.getDate()} de ${MESES[d.getMonth()]}`}
+let chatSeenBefore='';
+function drawChat(){
+  const L=$('ch-list');
+  L.innerHTML=NOTES.length?NOTES.map(n=>{
+    const it=n.item_id&&ITEMS.find(x=>x.id===n.item_id),mine=n.author_email===ME.email,name=n.author_name||(n.author_email||'').split('@')[0]||'Alguien';
+    const isNew=!mine&&chatSeenBefore&&n.created_at>chatSeenBefore;
+    return `<div class="msg ${mine?'mine':''}"><span class="av" style="background:${colorOf(n.author_email||name)}">${esc(name.charAt(0).toUpperCase())}</span>
+      <div class="b"><div class="who" style="color:${colorOf(n.author_email||name)}">${esc(name)}${mine?' (tú)':''} <span>· ${ago(n.created_at)}</span>${isNew?'<i class="newdot" aria-label="nuevo"></i>':''}</div>
+      <p>${esc(n.text)}</p>${it?`<button class="vid" data-read="${it.id}">Vídeo: ${esc(it.title)}${it.date?' · '+nice(it.date).replace(/^\S+ /,''):''}</button>`:''}</div>
+      <button class="btn sm ghost done" data-note-del="${n.id}">Hecho</button></div>`}).join('')
+    :`<div class="empty">No hay apuntes. Escribe el primero abajo.</div>`;
+  $('ch-name-box').hidden=!!ME.name;
+}
+function fillChatItems(sel){
+  const tk=ymd(addDays(new Date(),-7));
+  const dated=ITEMS.filter(i=>i.date&&i.date>=tk).sort((a,b)=>a.date.localeCompare(b.date));
+  const ideas=ITEMS.filter(i=>!i.date);
+  $('ch-item').innerHTML=`<option value="">Ninguno en concreto</option>`+
+    (dated.length?`<optgroup label="Calendario">${dated.map(i=>`<option value="${i.id}">${esc(nice(i.date).replace(/^\S+ /,''))} · ${esc(i.title)}</option>`).join('')}</optgroup>`:'')+
+    (ideas.length?`<optgroup label="Ideas">${ideas.map(i=>`<option value="${i.id}">${esc(i.title)}</option>`).join('')}</optgroup>`:'');
+  $('ch-item').value=sel&&ITEMS.some(i=>i.id===sel)?sel:'';
+}
+function openChat(itemId){
+  chatSeenBefore=getLS(SEEN_LS,'');
+  fillChatItems(itemId);drawChat();markSeen();drawFab();show('chat');
+  const L=$('ch-list');requestAnimationFrame(()=>{$('chat').querySelector('.sheet').scrollTop=1e6});
+  if(itemId)setTimeout(()=>$('ch-text').focus(),50);
+}
+async function sendNote(){
+  const text=$('ch-text').value.trim();if(!text){toast('Escribe el apunte');$('ch-text').focus();return}
+  if(!ME.name){const n=$('ch-name').value.trim();if(!n){toast('Pon tu nombre');$('ch-name').focus();return}await saveName(n)}
+  const n={text,author_email:ME.email,author_name:ME.name,item_id:$('ch-item').value||null,created_at:new Date().toISOString()};
+  $('ch-send').disabled=true;
+  if(MODE==='db'){const {data,error}=await sb.from('notes').insert({text:n.text,author_email:n.author_email,author_name:n.author_name,item_id:n.item_id}).select().single();
+    $('ch-send').disabled=false;if(error){toast('No se pudo enviar. Inténtalo otra vez.');return}NOTES.push(data)}
+  else{n.id=uid();NOTES.push(n);setLS(NOTE_LS,JSON.stringify(NOTES));$('ch-send').disabled=false}
+  $('ch-text').value='';markSeen();drawChat();drawFab();toast('Apunte enviado');
+  $('chat').querySelector('.sheet').scrollTop=1e6;
+}
+async function delNote(id){
+  NOTES=NOTES.filter(n=>n.id!==id);drawChat();drawFab();
+  if(MODE==='db'){const {error}=await sb.from('notes').delete().eq('id',id);if(error){toast('No se pudo borrar');loadNotes()}}
+  else setLS(NOTE_LS,JSON.stringify(NOTES));
+}
+
+/* ============================== NAVEGACIÓN ============================== */
+const PAGES=['inicio','calendario','ideas','genideas','diaadia','guiones','drive','consejos','ajustes'];
+function go(v,push=true){
+  if(!PAGES.includes(v))v='inicio';
+  view=v;
+  if(push){const h=v==='inicio'?' ':'#'+v;if(location.hash!==h.trim())history.replaceState(null,'',v==='inicio'?location.pathname+location.search:'#'+v)}
+  document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!=='p-'+v);
+  window.scrollTo(0,0);render();
+}
+function render(){({inicio:rHome,calendario:rCal,ideas:rIdeas,genideas:drawGI,diaadia:rDia,guiones:rGen,drive:rDrive,consejos:rTips,ajustes:rSet})[view]()}
+function applyBiz(){$('biz').textContent=SETTINGS.biz||'Salón 66'}
+
+/* ============================== INICIO ============================== */
+function rHome(){
+  const t=new Date();$('today-line').textContent=cap(`${DIAS[t.getDay()]}, ${t.getDate()} de ${MESES[t.getMonth()]}`);
+  $('h-cal').textContent=`Esta semana: ${weekCount()} de ${pubDays().length} publicaciones`;
+  const ideas=ITEMS.filter(i=>!i.date).length;
+  $('h-ideas').textContent=ideas?`${ideas} ${ideas===1?'idea guardada':'ideas guardadas'}`:'Todavía no hay ideas guardadas';
+  const grabar=ITEMS.filter(i=>i.date&&(i.status==='guion'||i.status==='grabar')).length;
+  const hoy=on(ymd(t)).filter(i=>i.status!=='publicado').length;
+  $('h-dia').textContent=(hoy?`Hoy: ${hoy} · `:'')+(grabar?`${grabar} pendiente${grabar>1?'s':''} de grabar`:'Nada pendiente de grabar');
+}
+
+/* ============================== CALENDARIO ============================== */
+function rCal(){
+  const y=cal.getFullYear(),m=cal.getMonth();
+  $('cal-title').textContent=`${MESES[m]} ${y}`;
+  const start=weekStart(new Date(y,m,1)),today=ymd(new Date()),P=pubDays();
+  let h=['L','M','X','J','V','S','D'].map(d=>`<div class="dow">${d}</div>`).join('');
+  for(let i=0;i<42;i++){
+    const d=addDays(start,i);
+    if(i%7===0&&i>=28&&d.getMonth()!==m)break;
+    const k=ymd(d),its=on(k),c=['day'];
+    if(d.getMonth()!==m)c.push('out');if(P.includes(d.getDay()))c.push('pub');if(k===today)c.push('today');if(k===selDay)c.push('sel');
+    h+=`<button class="${c.join(' ')}" data-day="${k}" aria-label="${nice(k)}, ${its.length} contenidos"><span class="n">${d.getDate()}</span><span class="dots">${its.slice(0,3).map(it=>`<i class="${it.status==='idea'?'open':''}"></i>`).join('')}</span></button>`;
+  }
+  $('grid').innerHTML=h;
+  const n=weekCount(),target=pubDays().length||3;
+  $('week-txt').textContent=`${n} de ${target} publicaciones`;
+  $('meter').innerHTML=Array.from({length:target},(_,i)=>`<i class="${i<n?'on':''}"></i>`).join('');
+  $('day-title').textContent=cap(nice(selDay));
+  const its=on(selDay);
+  $('day-list').innerHTML=its.length?its.map(i=>row(i)).join('')+`<div style="padding-top:16px"><button class="link-btn" data-act="pick-idea">Añadir otra desde la lista de ideas</button></div>`
+    :`<div class="empty">Nada programado este día.<div class="row"><button class="btn sm ghost" data-act="pick-idea">Elegir de la lista de ideas</button><button class="btn sm ghost" data-act="new-day">Crear contenido</button></div></div>`;
+}
+function row(it,opts={}){
+  const meta=[PILLARS[it.pillar]||'',FORMATS[it.format]||''];
+  if(it.date&&opts.date)meta.push(cap(nice(it.date)));
+  const nx=opts.next&&NEXT[it.status];
+  return `<div class="item" ${opts.assign?`data-assign="${it.id}"`:opts.read?`data-read="${it.id}"`:`data-open="${it.id}"`} role="button" tabindex="0">
+    <div class="b"><div class="t">${esc(it.title)}</div>
+    <div class="m"><span class="stt ${it.status||'idea'}">${STATUSES[it.status]||'Idea'}</span>${meta.filter(Boolean).join(' · ')}${it.drive_url?' · con vídeo':''}${it.ref_url?' · con referencia':''}</div>
+    ${opts.hook&&it.hook?`<div class="q">“${esc(it.hook)}”</div>`:''}</div>
+    ${nx?`<button class="btn sm ghost next" data-advance="${it.id}">${nx[1]}</button>`:'<span class="arr">→</span>'}</div>`;
+}
+function pickIdea(){
+  const ideas=ITEMS.filter(i=>!i.date);
+  picker('Idea para el '+nice(selDay),ideas.length?ideas.map(i=>row(i,{assign:true,hook:true})).join('')
+    :`<div class="empty">La lista de ideas está vacía.<div class="row"><button class="btn sm ghost" data-go="guiones">Ir al generador</button></div></div>`);
+}
+async function autoPlan(){
+  const y=cal.getFullYear(),m=cal.getMonth(),P=pubDays(),today=ymd(new Date()),holes=[];
+  for(let d=1;d<=new Date(y,m+1,0).getDate();d++){const dt=new Date(y,m,d),k=ymd(dt);if(P.includes(dt.getDay())&&k>=today&&!on(k).length)holes.push(k)}
+  const pool=ITEMS.filter(i=>!i.date);
+  if(!holes.length)return toast('No quedan huecos libres este mes');
+  if(!pool.length)return toast('No hay ideas guardadas todavía');
+  const plan=[];let last=null;
+  for(const k of holes){if(!pool.length)break;let ix=pool.findIndex(i=>i.pillar!==last);if(ix<0)ix=0;const it=pool.splice(ix,1)[0];last=it.pillar;plan.push([k,it])}
+  if(!await ask(`¿Colocar ${plan.length} ideas en los huecos libres de ${MESES[m]}?`,'Colocar'))return;
+  for(const[k,it]of plan)await saveItem({...it,date:k,status:it.status==='idea'?'guion':it.status});
+  toast(`${plan.length} contenidos programados`);render();
+}
+
+/* ============================== IDEAS ============================== */
+function rIdeas(){
+  const f=$('idea-filter'),q=$('search').value.toLowerCase(),fp=f.value;
+  const list=ITEMS.filter(i=>!i.date&&(fp==='all'||i.pillar===fp)&&(!q||[i.title,i.hook,i.body,i.notes].join(' ').toLowerCase().includes(q)))
+    .sort((a,b)=>(b.created_at||'').localeCompare(a.created_at||''));
+  $('idea-list').innerHTML=list.length?list.map(i=>row(i,{hook:true})).join('')
+    :`<div class="empty">${q||fp!=='all'?'No hay ideas con ese filtro.':'Todavía no hay ideas.'}<div class="row"><button class="btn sm ghost" data-act="new-idea">Escribir una idea</button><button class="btn sm ghost" data-go="guiones">Usar un guion</button></div></div>`;
+}
+
+/* ============================== DÍA A DÍA ============================== */
+function rDia(){
+  const tk=ymd(new Date());
+  const dated=ITEMS.filter(i=>i.date&&i.status!=='publicado').sort((a,b)=>a.date.localeCompare(b.date));
+  const rest=dated.filter(i=>i.date>tk);
+  const groups=[
+    ['Atrasado',dated.filter(i=>i.date<tk),null],
+    ['Hoy',dated.filter(i=>i.date===tk),'Hoy no hay nada programado.'],
+    ['Pendiente de grabar',rest.filter(i=>i.status==='guion'||i.status==='grabar'||i.status==='idea'),'No hay nada pendiente de grabar.'],
+    ['En edición',rest.filter(i=>i.status==='edicion'),'Nada en edición ahora mismo.'],
+    ['Listo para publicar',rest.filter(i=>i.status==='listo'),'Nada listo todavía.']
+  ];
+  $('dia').innerHTML=groups.filter(([,l,e])=>l.length||e).map(([h,l,e])=>`<div class="sec" style="margin-top:32px"><div class="sec-h"><h2>${h}</h2><span class="count">${l.length}</span></div>
+    <div class="list">${l.length?l.map(i=>row(i,{date:true,next:true,read:true})).join(''):`<div class="empty" style="padding:16px 0">${e}</div>`}</div></div>`).join('');
+}
+
+/* ============================== EDITOR ============================== */
+const F={title:'title',pillar:'pillar',format:'format',status:'status',date:'date',hook:'hook',intro:'intro',body:'body',closing:'closing',cta:'cta',caption:'caption',hashtags:'hashtags',drive:'drive_url',ref:'ref_url',notes:'notes'};
+function fillSel(){
+  const opts=Object.entries(PILLARS).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+  $('ed-pillar').innerHTML=opts;
+  $('ed-format').innerHTML=Object.entries(FORMATS).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+  $('ed-status').innerHTML=Object.entries(STATUSES).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+  $('gen-type').innerHTML=opts;
+  $('tpl-filter').innerHTML=`<option value="all">Todos los temas</option>`+opts;
+  $('idea-filter').innerHTML=`<option value="all">Todos los tipos</option>`+opts;
+  $('gi-type').innerHTML=`<option value="all">Cualquiera</option>`+opts;
+}
+
+/* ============================== GENERADOR DE IDEAS ============================== */
+let GI=[],giSrc='',giBusy=false;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const TOPICS=['el degradado','la barba','el corte bob','el flequillo','las mechas','el color','el pelo rizado','el pelo fino','las canas','el corte para niños','el peinado de novia','el peinado de fiesta','la cera y la pomada','el mullet','el buzz cut','la raya al lado','el alisado','el cuero cabelludo','el pelo largo','el corte de verano','la vuelta al cole','el corte clásico','el texturizado','el perfilado'];
+const FORMULAS=[
+ ['consejos','reel','3 errores con {t}','Si haces esto con {t}, para ya.','Tres fallos típicos y cómo evitarlos. Peluquero a cámara con texto grande.'],
+ ['consejos','carrusel','Cómo mantener {t} en casa','Que {t} te dure el doble. Guarda esto.','Carrusel de 5 pasos sencillos para casa.'],
+ ['consejos','reel','¿Te queda bien {t}? Te lo decimos en 15 segundos','¿{T} es para ti?','Para qué tipo de cara y pelo funciona y para cuál no.'],
+ ['consejos','reel','Lo que nadie te cuenta de {t}','Lo que nadie te cuenta de {t}.','Mantenimiento, tiempo de peinado y cada cuánto venir.'],
+ ['antes','reel','Antes y después: {t}','Mira el cambio. Sin filtros.','Mismo ángulo y misma luz. Transición con chasquido.'],
+ ['antes','carrusel','{T}: 4 fotos del cambio','Desliza para ver {t} terminado.','Antes y después de frente y de perfil.'],
+ ['proceso','reel','{T} paso a paso','Así se hace {t} de principio a fin.','Planos cortos de cada paso, acelerando lo largo.'],
+ ['proceso','reel','El detalle que cambia {t}','El paso que casi nadie ve.','Primer plano del detalle con el sonido real.'],
+ ['tendencias','reel','{T}: lo que más se pide este mes','Este mes todo el mundo nos pide {t}.','Qué es, para quién funciona y cómo peinarlo.'],
+ ['tendencias','reel','Probamos {t} en 3 estilos','Un mismo pelo, tres versiones de {t}.','Tres resultados y encuesta: ¿cuál te harías?'],
+ ['clientes','reel','Reacción al estrenar {t}','Lo que dijo al verse con {t}…','Graba el momento del espejo, sin preparar.'],
+ ['clientes','reel','Un cliente nos cuenta su experiencia con {t}','¿Qué tal con {t}? Se lo preguntamos a él.','Tres preguntas rápidas al cliente.'],
+ ['equipo','reel','Nuestro peluquero explica {t}','Lo que más le gusta hacer: {t}.','Un miembro del equipo enseña su técnica.'],
+ ['humor','reel','Expectativa vs realidad: {t}','Cuando piden {t} con una foto de Pinterest…','Foto de referencia, cara del peluquero y resultado real.'],
+ ['humor','reel','Tipos de clientes que piden {t}','¿Cuál de estos eres?','El equipo actuando cada tipo de cliente. Audio viral.'],
+ ['promo','stories','Huecos esta semana para {t}','Quedan huecos para {t} esta semana.','Días libres y cómo reservar, con sticker de enlace.'],
+ ['promo','reel','{T} con un amigo','Ven con un amigo a por {t}.','Promoción para venir acompañado.']
+];
+function localIdeas(type,topic){
+  const saved=new Set(ITEMS.map(i=>i.title.toLowerCase())),cap1=x=>x.charAt(0).toUpperCase()+x.slice(1);
+  const pool=[];
+  if(topic){
+    const T=cap1(topic.trim());
+    TEMPLATES.forEach(t=>{if(type==='all'||t.pillar===type)pool.push({title:`${T}: ${t.title.charAt(0).toLowerCase()+t.title.slice(1)}`,hook:t.hook,intro:`Versión de ${topic.trim()}. ${t.intro}`.trim(),pillar:t.pillar,format:t.format})});
+    for(const[p,hs]of Object.entries(HOOKS))if(type==='all'||p===type)hs.forEach(h=>pool.push({title:`${T}: ${h.replace(/[.…:]+$/,'').replace(/^./,c=>c.toLowerCase())}`,hook:h,intro:`Versión de ${topic.trim()}.`,pillar:p,format:'reel'}));
+  }else{
+    for(const t of shuffle([...TOPICS]))for(const[p,f,ti,h,d]of FORMULAS){if(type!=='all'&&p!==type)continue;
+      const fill=x=>x.replaceAll('{t}',t).replaceAll('{T}',cap1(t));pool.push({title:fill(ti),hook:fill(h),intro:d,pillar:p,format:f,k:ti})}
+    TEMPLATES.forEach(t=>{if(type==='all'||t.pillar===type)pool.push({title:t.title,hook:t.hook,intro:t.intro,pillar:t.pillar,format:t.format})});
+  }
+  const shown=new Set(GI.map(o=>o.title)),out=[],used=new Set();
+  for(const o of shuffle(pool.filter(o=>!saved.has(o.title.toLowerCase())&&!shown.has(o.title)))){
+    if(out.length>=5)break;const key=o.k||o.title;if(used.has(key))continue;used.add(key);const{k,...clean}=o;out.push(clean)}
+  return out;
+}
+async function genIdeas(){
+  if(giBusy)return;giBusy=true;
+  const btn=$('gi-go'),topic=$('gi-topic').value.trim(),type=$('gi-type').value;
+  btn.disabled=true;btn.textContent='Buscando ideas…';$('gi-status').textContent='';
+  const ideas=localIdeas(type,topic);
+  giSrc='local';
+  if(!ideas.length)toast('Ya has visto todas las ideas de ese tema. Prueba con otro.');
+  GI=ideas.map(o=>({...o,saved:false}));
+  giBusy=false;btn.disabled=false;btn.textContent='Generar 5 ideas más';drawGI();
+}
+function drawGI(){
+  $('gi-list').hidden=!GI.length;
+  $('gi-status').textContent=!GI.length?'':'Guarda las que te gusten. Pulsa otra vez para ver más.';
+  $('gi-list').innerHTML=GI.map((o,i)=>`<div class="item" style="cursor:default"><div class="b"><div class="t">${esc(o.title)}</div>
+    <div class="m">${PILLARS[o.pillar]} · ${FORMATS[o.format]}</div>${o.hook?`<div class="q">“${esc(o.hook)}”</div>`:''}${o.intro?`<div class="m" style="margin-top:6px">${esc(o.intro)}</div>`:''}</div>
+    <button class="btn sm ${o.saved?'solid':'ghost'} next" data-gi-save="${i}">${o.saved?'Guardada':'Guardar'}</button></div>`).join('');
+}
+function setEd(o){for(const[f,k]of Object.entries(F))$('ed-'+f).value=o[k]||'';
+  if(!o.pillar)$('ed-pillar').value='consejos';if(!o.format)$('ed-format').value='reel';if(!o.status)$('ed-status').value='idea';updOpen()}
+function firstUrl(t){const m=String(t||'').match(/https?:\/\/\S+/);return m?m[0].replace(/[),.]+$/,''):String(t||'').trim()}
+function getEd(){const o={};for(const[f,k]of Object.entries(F))o[k]=$('ed-'+f).value.trim();o.date=o.date||null;o.ref_url=firstUrl(o.ref_url);return o}
+function updOpen(){const u=$('ed-drive').value.trim();$('ed-open').hidden=!/^https?:\/\//.test(u);$('ed-open').href=u||'#';
+  const r=firstUrl($('ed-ref').value);$('ed-ref-open').hidden=!/^https?:\/\//.test(r);$('ed-ref-open').href=r||'#'}
+function openEd(it,isNew){editing=isNew?null:it.id;setEd(it);
+  $('ed-h').textContent=isNew?(it.date?'Nuevo contenido':'Nueva idea'):(it.date?'Contenido':'Idea');
+  $('ed-del').hidden=$('ed-dup').hidden=isNew;show('editor')}
+function newItem(p){openEd({pillar:'consejos',format:'reel',status:p.date?'guion':'idea',...p},true)}
+async function edSave(){
+  const o=getEd();if(!o.title){toast('Ponle un título');$('ed-title').focus();return}
+  if(o.date&&o.status==='idea')o.status='guion';
+  const prev=editing?ITEMS.find(x=>x.id===editing):null;
+  const s=await saveItem({...(prev||{}),...o,id:editing||undefined});if(!s)return;
+  hide('editor');toast('Guardado');
+  if(s.date&&view==='calendario'){selDay=s.date;const d=pd(s.date);cal=new Date(d.getFullYear(),d.getMonth(),1)}
+  render();
+}
+async function edDel(){if(!editing||!await ask('¿Eliminar este contenido?','Eliminar'))return;if(await delItem(editing)){hide('editor');toast('Eliminado');render()}}
+async function edDup(){const o=getEd();await saveItem({...o,title:o.title+' (copia)',date:null,status:'idea',drive_url:''});hide('editor');toast('Copia guardada en ideas');render()}
+function swap(part){const p=$('ed-pillar').value,el=$('ed-'+part),b=part==='hook'?HOOKS[p]:part==='cta'?CTAS:CLOSINGS;let v;do{v=rnd(b)}while(b.length>1&&v===el.value);el.value=v}
+function slug(s){return(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'')}
+function tags(){
+  const city=slug(SETTINGS.city),biz=slug(SETTINGS.biz||'salon66');
+  const t=['#'+biz,'#peluqueria','#barberia','#cortedepelo','#haircut'];
+  if(city)t.push('#'+city,'#peluqueria'+city);
+  const p=$('ed-pillar').value,x=($('ed-title').value+' '+$('ed-body').value).toLowerCase();
+  if(p==='antes')t.push('#antesydespues','#cambiodelook');
+  if(x.includes('degradado')||x.includes('fade'))t.push('#degradado','#fade');
+  if(x.includes('barba'))t.push('#barba','#beard');
+  if(p==='tendencias')t.push('#tendencias','#cortesdemoda');
+  $('ed-hashtags').value=t.join(' ');
+}
+function scriptTxt(o){return[o.title,`${PILLARS[o.pillar]||''} · ${FORMATS[o.format]||''}${o.date?' · '+nice(o.date):''}`,'',
+  o.hook&&`GANCHO\n${o.hook}`,o.intro&&`ENTRADA\n${o.intro}`,o.body&&`DESARROLLO\n${o.body}`,o.closing&&`CIERRE\n${o.closing}`,o.cta&&`LLAMADA A LA ACCIÓN\n${o.cta}`,o.ref_url&&`VÍDEO DE REFERENCIA\n${o.ref_url}`,o.notes&&`NOTAS DE GRABACIÓN\n${o.notes}`].filter(x=>x!==''&&x).join('\n\n')}
+function captionOf(t){return[t.hook,t.intro,t.closing,t.cta].filter(Boolean).join('\n\n')}
+async function copy(text,msg){
+  try{await navigator.clipboard.writeText(text);toast(msg||'Copiado')}
+  catch(e){const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();
+    let ok=false;try{ok=document.execCommand('copy')}catch(_){}ta.remove();toast(ok?(msg||'Copiado'):'No se pudo copiar: mantén pulsado el texto para copiarlo')}
+}
+function tplPicker(){
+  const p=$('ed-pillar').value,list=TEMPLATES.map((t,i)=>[t,i]).sort((a,b)=>(b[0].pillar===p)-(a[0].pillar===p));
+  picker('Elegir guion',list.map(([t,i])=>`<button class="item" data-tpl="${i}"><span class="b"><span class="t" style="display:block">${esc(t.title)}</span><span class="m" style="display:block">${PILLARS[t.pillar]} · ${FORMATS[t.format]}</span><span class="q" style="display:block">“${esc(t.hook)}”</span></span><span class="arr">→</span></button>`).join(''));
+}
+function applyTpl(i){const t=TEMPLATES[i],c=getEd();setEd({...c,...t,title:c.title||t.title,date:c.date,status:c.status,drive_url:c.drive_url,caption:c.caption||captionOf(t)});hide('picker')}
+
+/* ============================== GUIONES ============================== */
+function card(t,acts,feature){
+  const part=(l,v)=>v?`<div class="part"><span class="k">${l}</span><p>${esc(v)}</p></div>`:'';
+  return `<article class="script ${feature?'feature':''}"><div class="eyebrow">${PILLARS[t.pillar]} · ${FORMATS[t.format]}</div><h3>${esc(t.title)}</h3>
+   ${part('Gancho',t.hook)}${part('Entrada',t.intro)}${part('Desarrollo',t.body)}${part('Cierre',t.closing)}${part('Acción',t.cta)}${part('Grabar',t.notes)}
+   <div class="row">${acts}</div></article>`;
+}
+function rGen(){
+  if(!gCur||gCur.pillar!==$('gen-type').value)generate();else drawGen();
+  const f=$('tpl-filter').value,list=TEMPLATES.map((t,i)=>[t,i]).filter(([t])=>f==='all'||t.pillar===f);
+  $('tpl-count').textContent=`${list.length} guiones`;
+  $('tpl-list').innerHTML=list.map(([t,i])=>card(t,`<button class="btn sm ghost" data-save-tpl="${i}">Guardar en ideas</button><button class="btn sm ghost" data-copy-tpl="${i}">Copiar</button>`)).join('');
+}
+function generate(){const p=$('gen-type').value,pool=TEMPLATES.filter(t=>t.pillar===p),b=rnd(pool);gCur={...b,hook:rnd([b.hook,...HOOKS[p]]),cta:rnd([b.cta,...CTAS])};drawGen()}
+function drawGen(){$('gen-out').innerHTML=card(gCur,`<button class="btn sm solid" data-g="new">Otra idea</button><button class="btn sm ghost" data-g="hook">Otro gancho</button><button class="btn sm ghost" data-g="cta">Otra llamada</button><button class="btn sm ghost" data-g="save">Guardar en ideas</button><button class="btn sm ghost" data-g="plan">Programar</button>`,true)}
+function asItem(t){return{title:t.title,pillar:t.pillar,format:t.format,status:'idea',hook:t.hook,intro:t.intro,body:t.body,closing:t.closing,cta:t.cta,caption:captionOf(t),hashtags:'',notes:t.notes||'',drive_url:'',date:null}}
+function nextFree(){const P=pubDays(),d=new Date();for(let i=0;i<120;i++){const x=addDays(d,i),k=ymd(x);if(P.includes(x.getDay())&&!on(k).length)return k}return ymd(d)}
+
+/* ============================== DRIVE ============================== */
+function rDrive(){
+  const L=[['drive_main','Carpeta Redes','Todo el contenido'],['drive_raw','1 Brutos','Lo que grabas, tal cual'],['drive_edit','2 Para editar','Lo que le pasas al editor'],['drive_done','3 Editados','Lo que devuelve el editor'],['drive_pub','4 Publicados','Lo que ya ha salido'],['ig','Instagram','Perfil'],['tt','TikTok','Perfil']];
+  const ok=u=>/^https?:\/\//.test(u||'');
+  $('drive-links').innerHTML=L.filter(([k])=>!['ig','tt'].includes(k)||ok(SETTINGS[k])).map(([k,l,d])=>ok(SETTINGS[k])
+    ?`<a class="lnk" href="${esc(SETTINGS[k])}" target="_blank" rel="noopener"><span class="b"><b>${l}</b><div class="small muted">${d}</div></span><span>↗</span></a>`
+    :`<div class="lnk off"><span class="b"><b>${l}</b><div class="small">Sin enlace todavía</div></span></div>`).join('');
+  const v=ITEMS.filter(i=>ok(i.drive_url)).sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,20);
+  $('drive-vids').innerHTML=v.length?`<div class="sec-h"><h2>Contenidos con vídeo</h2><span class="count">${v.length}</span></div><div class="list">${v.map(i=>row(i,{date:true})).join('')}</div>`:'';
+}
+
+/* ============================== CONSEJOS ============================== */
+function rTips(){
+  const city=slug(SETTINGS.city)||'tuciudad',biz=slug(SETTINGS.biz||'salon66');
+  const H={'Base':`#${biz} #peluqueria #barberia #cortedepelo #haircut`,'Local':`#${city} #peluqueria${city} #barberia${city}`,'Degradados':'#degradado #fade #skinfade #barber','Barba':'#barba #beard #perfilado','Antes y después':'#antesydespues #cambiodelook #transformacion'};
+  $('tips').innerHTML=`
+  <h2 style="margin-top:0">Una semana con 3 publicaciones</h2><ul>
+    <li><b>Lunes, enseña:</b> consejo, tipo de corte o cuidados. Es lo que más se guarda.</li>
+    <li><b>Miércoles, demuestra:</b> antes y después o proceso. Es lo que trae clientes.</li>
+    <li><b>Viernes, conecta:</b> equipo, clientes, humor o tendencia. Es lo que hace que te sigan.</li>
+    <li><b>Cada día:</b> 3 a 5 stories del día a día, encuestas y huecos libres.</li></ul>
+  <h2>Cómo se monta cada vídeo</h2><ol>
+    <li><b>Gancho:</b> los primeros 3 segundos. Texto grande en pantalla.</li>
+    <li><b>Entrada:</b> de qué va, en una frase.</li>
+    <li><b>Desarrollo:</b> el contenido, con cortes rápidos de 2 o 3 segundos.</li>
+    <li><b>Cierre:</b> el resultado final. Lo mejor, al final.</li>
+    <li><b>Llamada a la acción:</b> síguenos, guárdalo, escríbenos.</li></ol>
+  <p class="muted">Un reel funciona mejor entre 7 y 30 segundos.</p>
+  <h2>Antes de grabar</h2><ul>
+    <li>Luz de frente: ventana o aro de luz. Nunca a contraluz.</li>
+    <li>Móvil en vertical y lente limpia.</li>
+    <li>Antes y después con el mismo ángulo, luz y distancia.</li>
+    <li>Pide permiso al cliente para salir.</li>
+    <li>Graba de más: manos, herramientas, detalles, la reacción.</li>
+    <li>Sube los brutos al Drive el mismo día.</li></ul>
+  <h2>Con el editor de vídeo</h2><ol>
+    <li>Grabas y subes a 1 Brutos.</li>
+    <li>Marcas el contenido como grabado (pasa a En edición) y le mandas el guion con Copiar guion.</li>
+    <li>El editor lo deja en 3 Editados y tú lo marcas como Listo.</li>
+    <li>Publicas, lo marcas como Publicado y lo mueves a 4 Publicados.</li></ol>
+  <p class="muted">Dale al editor 3 o 4 días de margen: graba lo de la semana siguiente antes del jueves.</p>
+  <h2>Más ideas para crecer</h2><ul>
+    <li><b>Historias destacadas:</b> Cortes, Barbas, Precios, Reseñas y Cómo llegar.</li>
+    <li><b>Palabra clave:</b> "escríbenos CORTE" en los reels para abrir conversaciones.</li>
+    <li><b>Respuestas rápidas</b> en los mensajes para precio, horario y dirección.</li>
+    <li><b>Google Business:</b> sube allí también los antes y después para salir en Google Maps.</li>
+    <li><b>Pide reseñas</b> al terminar cada corte y úsalas como contenido.</li>
+    <li><b>Colaboraciones</b> con tiendas de ropa, gimnasios o tatuadores de la zona.</li>
+    <li><b>Fechas clave:</b> vuelta al cole, Navidad, bodas y comuniones, Día del Padre.</li>
+    <li><b>Sorteo</b> de un corte al llegar a cierto número de seguidores.</li>
+    <li><b>Reaprovecha:</b> un reel también sirve como carrusel, story y TikTok.</li>
+    <li><b>Cada mes</b> mira qué vídeos tuvieron más guardados y compartidos, y repite la fórmula.</li></ul>
+  <h2>Hashtags</h2><p class="muted" style="margin-top:0">Usa entre 5 y 10.${SETTINGS.city?'':' Pon la ciudad en Ajustes para los locales.'}</p>
+  <div style="border-top:1px solid var(--line)">${Object.entries(H).map(([l,h])=>`<div class="cl"><span><b>${l}</b><br><span class="muted">${esc(h)}</span></span><button class="btn sm ghost" data-copy="${esc(h)}">Copiar</button></div>`).join('')}</div>`;
+}
+
+/* ============================== AJUSTES ============================== */
+const SK=['biz','city','drive_main','drive_raw','drive_edit','drive_done','drive_pub','ig','tt'];
+let draftDays=null;
+function rSet(){SK.forEach(k=>$('s-'+k).value=SETTINGS[k]||'');draftDays=[...pubDays()];drawDays()}
+function drawDays(){const N={1:'Lun',2:'Mar',3:'Mié',4:'Jue',5:'Vie',6:'Sáb',0:'Dom'};$('s-days').innerHTML=[1,2,3,4,5,6,0].map(d=>`<button class="chip ${draftDays.includes(d)?'on':''}" data-day-toggle="${d}">${N[d]}</button>`).join('')}
+
+/* ============================== HOJAS ============================== */
+function show(id){$(id).hidden=false;document.body.style.overflow='hidden'}
+function hide(id){$(id).hidden=true;if(![...document.querySelectorAll('.sheetbg')].some(s=>!s.hidden))document.body.style.overflow=''}
+function picker(t,html){$('pk-h').textContent=t;$('pk-list').innerHTML=html;show('picker')}
+function ask(msg,yes){return new Promise(r=>{$('cf-msg').textContent=msg;$('cf-yes').textContent=yes||'Sí';show('confirm');
+  $('cf-yes').onclick=()=>{hide('confirm');r(true)};$('cf-no').onclick=()=>{hide('confirm');r(false)}})}
+
+/* ============================== EVENTOS ============================== */
+document.addEventListener('click',async e=>{
+  const t=e.target.closest('button,[data-open],[data-assign],[data-read]');if(!t)return;
+  const d=t.dataset;
+  if(d.giSave!==undefined){const o=GI[+d.giSave];if(!o||o.saved)return;
+    if(await saveItem({title:o.title,pillar:o.pillar,format:o.format,status:'idea',hook:o.hook,intro:o.intro,body:'',closing:'',cta:rnd(CTAS),caption:'',hashtags:'',notes:'',drive_url:'',date:null})){o.saved=true;drawGI();toast('Guardada en la lista de ideas')}return}
+  if(d.advance){const it=ITEMS.find(x=>x.id===d.advance);if(it&&NEXT[it.status]){const ns=NEXT[it.status][0];if(await saveItem({...it,status:ns})){toast(STATUSES[ns]);render()}}return}
+  if(d.go){hide('picker');return go(d.go)}
+  if(d.close)return hide(d.close);
+  if(d.day){selDay=d.day;const x=pd(d.day);if(x.getMonth()!==cal.getMonth())cal=new Date(x.getFullYear(),x.getMonth(),1);return rCal()}
+  if(d.noteDel)return delNote(d.noteDel);
+  if(d.read){hide('chat');return openReader(d.read)}
+  if(d.open){const it=ITEMS.find(x=>x.id===d.open);if(it)openEd(it,false);return}
+  if(d.assign){const it=ITEMS.find(x=>x.id===d.assign);hide('picker');if(it&&await saveItem({...it,date:selDay,status:it.status==='idea'?'guion':it.status})){toast('Idea programada');render()}return}
+  if(d.act==='pick-idea')return pickIdea();
+  if(d.act==='new-idea')return newItem({});
+  if(d.act==='new-day')return newItem({date:selDay});
+  if(d.g==='new')return generate();
+  if(d.g==='hook'||d.g==='cta'){const b=d.g==='hook'?HOOKS[gCur.pillar]:CTAS;let v;do{v=rnd(b)}while(v===gCur[d.g]);gCur[d.g]=v;return drawGen()}
+  if(d.g==='save'){if(await saveItem(asItem(gCur)))toast('Guardado en la lista de ideas');return}
+  if(d.g==='plan')return newItem({...asItem(gCur),status:'guion',date:nextFree()});
+  if(d.saveTpl){if(await saveItem(asItem(TEMPLATES[+d.saveTpl])))toast('Guardado en la lista de ideas');return}
+  if(d.copyTpl)return copy(scriptTxt(TEMPLATES[+d.copyTpl]),'Guion copiado');
+  if(d.copy)return copy(d.copy,'Hashtags copiados');
+  if(d.tpl)return applyTpl(+d.tpl);
+  if(d.swap)return swap(d.swap);
+  if(d.dayToggle!==undefined){const n=+d.dayToggle;draftDays=draftDays.includes(n)?draftDays.filter(x=>x!==n):[...draftDays,n];return drawDays()}
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.matches('[data-open],[data-assign],[data-read]'))e.target.click();
+  if(e.key==='Escape')['confirm','picker','chat','editor','reader'].some(id=>!$(id).hidden&&(hide(id),true));
+});
+$('prev').onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()-1,1);rCal()};
+$('next').onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()+1,1);rCal()};
+$('today').onclick=()=>{const n=new Date();cal=new Date(n.getFullYear(),n.getMonth(),1);selDay=ymd(n);rCal()};
+$('autoplan').onclick=autoPlan;
+$('fab').onclick=()=>openChat();
+$('ch-send').onclick=sendNote;
+$('rd-note').onclick=()=>{const id=reading;hide('reader');openChat(id)};
+$('ed-note').onclick=()=>{const id=editing;hide('editor');openChat(id)};
+$('rd-done').onclick=markRecorded;
+$('rd-copy').onclick=()=>{const it=ITEMS.find(x=>x.id===reading);if(it)copy(scriptTxt(it),'Guion copiado')};
+$('rd-edit').onclick=()=>{const it=ITEMS.find(x=>x.id===reading);hide('reader');if(it)openEd(it,false)};
+$('gi-go').onclick=genIdeas;
+$('add-day').onclick=()=>newItem({date:selDay});
+$('add-idea').onclick=()=>newItem({});
+$('search').oninput=rIdeas;$('idea-filter').onchange=rIdeas;
+$('gen-type').onchange=generate;$('tpl-filter').onchange=rGen;
+$('ed-save').onclick=edSave;$('ed-del').onclick=edDel;$('ed-dup').onclick=edDup;
+$('ed-fill').onclick=tplPicker;$('ed-nodate').onclick=()=>{$('ed-date').value='';toast('Al guardar vuelve a la lista de ideas')};
+$('ed-tags').onclick=e=>{e.preventDefault();tags()};
+$('ed-drive').oninput=updOpen;$('ed-ref').oninput=updOpen;
+$('ed-copy-script').onclick=()=>copy(scriptTxt(getEd()),'Guion copiado');
+$('ed-copy-cap').onclick=()=>{const o=getEd();copy([o.caption||captionOf(o),o.hashtags].filter(Boolean).join('\n\n'),'Texto copiado')};
+document.querySelectorAll('.sheetbg').forEach(s=>s.addEventListener('click',e=>{if(e.target===s&&s.id!=='confirm')hide(s.id)}));
+$('save-settings').onclick=async()=>{const o={pub_days:draftDays};SK.forEach(k=>o[k]=$('s-'+k).value.trim());if(await saveSettings(o)){applyBiz();toast('Ajustes guardados')}};
+window.addEventListener('hashchange',()=>{const v=location.hash.slice(1)||'inicio';if(v!==view)go(v,false)});
+
+fillSel();
+go(PAGES.includes(location.hash.slice(1))?location.hash.slice(1):'inicio',false);
+connect();
+</script>
+
+</body>
+</html>
