@@ -5,4 +5,5 @@ Web interna para gestionar las redes sociales del salón: calendario de contenid
 - Inicio: calendario, lista de ideas, vídeos en Drive (con lo pendiente de grabar) y generadores (ideas y guiones).
 - Se abre desde el enlace de GitHub Pages y se entra con email y contraseña.
 - Los datos se guardan en Supabase. Los usuarios se crean en Supabase → Authentication → Users.
+- `contenido.js` tiene el contenido profesional por temas (consejos, causas, mitos, rutina...). Para añadir un tema, copia uno y cambia los textos.
 - `supabase.sql` contiene las tablas (solo hace falta ejecutarlo una vez).
