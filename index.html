@@ -278,6 +278,23 @@ details.guide summary{font-weight:700;color:var(--navy);cursor:pointer}
 .trow{display:flex;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
 .trow b{flex:1;min-width:0;color:var(--navy)}
 .trow select{width:auto;padding:8px 10px;font-size:14px}
+.plan-step{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+.plan-step .n{width:28px;height:28px;border-radius:50%;background:var(--navy);color:var(--inv-fg);display:grid;place-items:center;font-weight:700;font-size:14px;flex-shrink:0}
+.plan-step .b{flex:1;min-width:0}
+.plan-step h3{font-size:17px;margin-bottom:8px}
+.special{display:flex;gap:8px;align-items:baseline;font-size:14px;padding:4px 0}
+.special::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;transform:translateY(-2px)}
+.sumbox{background:var(--ice);border:1px solid var(--sky);border-radius:14px;padding:14px 16px;margin:24px 0 8px;font-size:15px;color:var(--navy)}
+.wk-h{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin:22px 0 6px}
+.prow{padding:14px 0;border-bottom:1px solid var(--line)}
+.prow.skip{opacity:.45}
+.prow .top{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.prow .dd{font-weight:800;color:var(--navy);min-width:62px}
+.prow .t{font-weight:700;color:var(--navy);margin-top:4px}
+.src{font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 9px;background:var(--sky);color:var(--navy)}
+.src.nuevo{background:var(--soft);color:var(--muted)}
+.src.esp{background:var(--blue);color:#fff}
+.prow .row{margin-top:10px}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}</style>
 </head>
@@ -310,6 +327,7 @@ details.guide summary{font-weight:700;color:var(--navy);cursor:pointer}
       <button class="sc" data-go="generadores"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.6L18.5 9l-4.7 1.4L12 15l-1.8-4.6L5.5 9l4.7-1.4z"/><path d="M18.5 15l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></svg></span><span class="txt"><b>Generadores</b><span>Ideas y guiones</span></span><span class="arr">→</span></button>
     </nav>
     <div class="home-foot">
+      <button data-go="planificar">Planificar mes</button>
       <button data-go="consejos">Consejos</button>
       <button data-go="ajustes">Ajustes</button>
     </div>
@@ -392,6 +410,21 @@ details.guide summary{font-weight:700;color:var(--navy);cursor:pointer}
         <li>Nombra los archivos con fecha y tema, por ejemplo <b>2026-11-04_degradado.mp4</b>.</li>
       </ol>
     </div></details>
+  </section>
+
+  <!-- ============ PLANIFICAR MES ============ -->
+  <section class="page" id="p-planificar" hidden>
+    <div class="bar"><button class="back" data-go="inicio">← Inicio</button></div>
+    <div class="ph"><div class="eyebrow">Planificación</div><h1>Planificar mes</h1><p>Hazlo la primera semana de cada mes para dejar listo el mes siguiente.</p></div>
+    <div style="border-top:1px solid var(--line)">
+      <div class="plan-step"><span class="n">1</span><div class="b"><h3>Elige el mes</h3><select id="pl-month"></select></div></div>
+      <div class="plan-step"><span class="n">2</span><div class="b"><h3>Tema de la serie del mes (opcional)</h3>
+        <input type="text" id="pl-theme" placeholder="Ej. caída de cabello"><p class="small muted" id="pl-theme-hint" style="margin:8px 0 0"></p></div></div>
+      <div class="plan-step"><span class="n">3</span><div class="b"><h3>Fechas especiales</h3><div id="pl-specials"></div></div></div>
+      <div class="plan-step"><span class="n">4</span><div class="b"><h3>Crea la propuesta</h3><p class="small muted" style="margin:0 0 12px">Rellena cada día de publicación: primero con tu lista de ideas, luego con las fechas especiales y el resto con guiones nuevos. Lunes enseña, miércoles demuestra, viernes conecta.</p>
+        <button class="btn solid" id="pl-go" style="width:100%">Crear propuesta</button></div></div>
+    </div>
+    <div id="pl-out"></div>
   </section>
 
   <!-- ============ CONSEJOS ============ -->
@@ -749,7 +782,7 @@ async function delNote(id){
 }
 
 /* ============================== NAVEGACIÓN ============================== */
-const PAGES=['inicio','calendario','ideas','generadores','genideas','guiones','drive','consejos','ajustes'];
+const PAGES=['planificar','inicio','calendario','ideas','generadores','genideas','guiones','drive','consejos','ajustes'];
 function go(v,push=true){
   if(!PAGES.includes(v))v='inicio';
   view=v;
@@ -757,7 +790,7 @@ function go(v,push=true){
   document.querySelectorAll('.page').forEach(p=>p.hidden=p.id!=='p-'+v);
   window.scrollTo(0,0);render();
 }
-function render(){({inicio:rHome,calendario:rCal,ideas:rIdeas,generadores:()=>{},genideas:drawGI,guiones:rGen,drive:rDrive,consejos:rTips,ajustes:rSet})[view]()}
+function render(){({planificar:rPlan,inicio:rHome,calendario:rCal,ideas:rIdeas,generadores:()=>{},genideas:drawGI,guiones:rGen,drive:rDrive,consejos:rTips,ajustes:rSet})[view]()}
 function applyBiz(){$('biz').textContent=SETTINGS.biz||'Salón 66'}
 
 /* ============================== INICIO ============================== */
@@ -981,6 +1014,152 @@ function drawGen(){$('gen-out').innerHTML=card(gCur,`<button class="btn sm solid
 function asItem(t){return{cast:t.cast||suggestCast(t.pillar,t.title,t.title),title:t.title,pillar:t.pillar,format:t.format,status:'idea',hook:t.hook,intro:t.intro,body:t.body,closing:t.closing,cta:t.cta,caption:captionOf(t),hashtags:'',notes:t.notes||'',drive_url:'',date:null}}
 function nextFree(){const P=pubDays(),d=new Date();for(let i=0;i<120;i++){const x=addDays(d,i),k=ymd(x);if(P.includes(x.getDay())&&!on(k).length)return k}return ymd(d)}
 
+
+/* ============================== PLANIFICAR MES ============================== */
+const T_=(pillar,format,title,hook,intro,body,closing,cta,notes)=>({pillar,format,title,hook,intro,body,closing,cta,notes});
+const SEASON={
+ 0:{topic:'el pelo después de las fiestas',dates:['Año nuevo: propósitos','Rebajas de enero'],specials:[
+  T_('consejos','carrusel','Propósitos de año nuevo para tu pelo','Este año, tu pelo también tiene propósitos.','Cinco hábitos fáciles para empezar el año.','1. Cortar las puntas cada 8-10 semanas.\n2. Protector de calor siempre.\n3. Lavar con agua templada.\n4. Mascarilla una vez por semana.\n5. Revisión en el salón cada temporada.','Pequeños cambios, gran diferencia en un año.','Guárdalo y cuéntanos cuál vas a cumplir.','Una diapositiva por propósito.'),
+  T_('promo','stories','Agenda de enero','Empieza el año con el pelo a punto.','Huecos disponibles en enero.','Días y horas libres y cómo reservar.','Los primeros días se llenan rápido.','Reserva por privado o desde el enlace.','Sticker de enlace.')]},
+ 1:{topic:'el encrespamiento en invierno',dates:['San Valentín (14)'],specials:[
+  T_('tendencias','reel','Peinados para San Valentín','Tres peinados para una cena especial.','Fáciles, elegantes y que aguantan toda la noche.','Peinado 1: …\nPeinado 2: …\nPeinado 3: …','¿Con cuál te quedas?','Comenta tu favorito.','Un peinado por plano, resultado final de frente.'),
+  T_('promo','carrusel','Regala un servicio por San Valentín','El regalo que sí se usa.','Tarjeta regalo para San Valentín.','Qué incluye, precio y cómo pedirla.','Un detalle diferente.','Escríbenos por privado para pedir la tuya.','Foto de la tarjeta regalo.')]},
+ 2:{topic:'el cambio de look de primavera',dates:['Día del Padre (19)','Llega la primavera'],specials:[
+  T_('promo','reel','Día del Padre: corte y arreglo de barba','Este año, regálale un rato para él.','Tarjeta regalo de corte y barba.','Qué incluye, precio y cómo conseguirla.','El regalo que de verdad usa.','Reserva o pide la tarjeta por privado.','Grabar un arreglo de barba con un cliente.'),
+  T_('tendencias','carrusel','Cortes para la primavera','Llega la primavera: toca cambio.','Los cortes que más se van a pedir esta temporada.','Corte 1: para quién y foto.\nCorte 2: para quién y foto.\nCorte 3: para quién y foto.','¿Te animas al cambio?','Guárdalo para tu próxima cita.','Fotos de trabajos del salón.')]},
+ 3:{topic:'los peinados de comunión',dates:['Comuniones','Semana Santa'],specials:[
+  T_('proceso','reel','Peinado de comunión paso a paso','Así preparamos un peinado de comunión.','Cómodo, bonito y que dura todo el día.','1. Preparación del pelo.\n2. Recogido o semirrecogido.\n3. Fijación y adornos.','Lista para su gran día.','Reserva ya tu prueba de peinado.','Pedir permiso a la familia.'),
+  T_('promo','stories','Reserva tu prueba de peinado','Las fechas de comuniones vuelan.','Abrimos agenda para pruebas de peinado.','Días disponibles y cómo reservar.','Mejor reservar con tiempo.','Escríbenos por privado.','Sticker de enlace.')]},
+ 4:{topic:'el pelo para bodas y eventos',dates:['Día de la Madre (primer domingo)','Bodas'],specials:[
+  T_('promo','reel','Día de la Madre: regala un tratamiento','Para la que siempre cuida de todos.','Tarjeta regalo de tratamiento para el Día de la Madre.','Qué incluye, precio y cómo pedirla.','Que esta vez la cuiden a ella.','Pide la tuya por privado.','Grabar un tratamiento relajante.'),
+  T_('proceso','reel','Prueba de peinado de novia','Así es una prueba de peinado de novia.','Te enseñamos cómo trabajamos con cada novia.','1. Charla y referencias.\n2. Prueba del peinado.\n3. Ajustes y fotos.','El día de la boda, sin sorpresas.','Reserva tu prueba con tiempo.','Con permiso de la novia.')]},
+ 5:{topic:'el cuidado del pelo en verano',dates:['Empieza el verano'],specials:[
+  T_('consejos','carrusel','Cómo proteger el pelo del sol','El sol también daña el pelo.','Cinco gestos para protegerlo este verano.','1. Protector capilar con filtro.\n2. Gorra o sombrero.\n3. Aclarar tras el baño.\n4. Mascarilla semanal.\n5. Evitar calor extra.','Tu pelo te lo agradecerá en septiembre.','Guárdalo para tus vacaciones.','Una diapositiva por consejo.'),
+  T_('tendencias','reel','Cortes frescos para el verano','Cortes cómodos para el calor.','Los que más se piden en verano.','Corte 1: …\nCorte 2: …\nCorte 3: …','Frescos y fáciles de peinar.','Comenta cuál te harías.','Fotos o clips de trabajos del salón.')]},
+ 6:{topic:'el pelo con cloro y sal',dates:['Vacaciones','Horario de verano'],specials:[
+  T_('consejos','reel','Qué hacer después de la piscina o la playa','Después del baño, haz esto.','El cloro y la sal resecan el pelo.','1. Aclarar con agua dulce.\n2. Desenredar con cuidado.\n3. Acondicionador sin aclarado.','Así llegas a septiembre con el pelo sano.','Guárdalo para estas vacaciones.','Grabar en exterior si es posible.'),
+  T_('promo','stories','Horario de verano del salón','Cambiamos el horario en verano.','Te contamos el horario de julio y agosto.','Horario, días de cierre y cómo reservar.','Organízate con tiempo.','Reserva desde el enlace.','Diseño sencillo con el horario.')]},
+ 7:{topic:'el pelo dañado por el sol',dates:['Vacaciones','Reservas para septiembre'],specials:[
+  T_('consejos','carrusel','Kit de verano para tu pelo','Lo que no puede faltar en tu bolsa de playa.','Lo básico para cuidar el pelo fuera de casa.','Protector solar capilar.\nCepillo desenredante.\nAcondicionador sin aclarado.\nGomas que no marquen.','Pocas cosas, mucha diferencia.','Guárdalo antes de hacer la maleta.','Foto de los productos sobre una toalla.'),
+  T_('promo','stories','Reserva ya para septiembre','Septiembre se llena rápido.','Abrimos agenda para la vuelta.','Días disponibles y cómo reservar.','Asegura tu hueco.','Reserva desde el enlace.','Sticker de enlace.')]},
+ 8:{topic:'el pelo después del verano',dates:['Vuelta al cole','Vuelta a la rutina'],specials:[
+  T_('tendencias','reel','Vuelta al cole: cortes para niños','Cortes fáciles para la vuelta al cole.','Prácticos para el día a día.','Corte 1: …\nCorte 2: …\nCorte 3: …','Listos para el primer día.','Reserva para los peques desde el enlace.','Con permiso de los padres.'),
+  T_('proceso','reel','Recupera tu pelo después del verano','Así recuperamos un pelo castigado por el verano.','Tratamiento de recuperación en el salón.','1. Diagnóstico.\n2. Saneado de puntas.\n3. Tratamiento hidratante.\n4. Consejos para casa.','Como nuevo para el otoño.','Pide cita y lo revisamos.','Antes y después con la misma luz.')]},
+ 9:{topic:'la caída del cabello en otoño',dates:['Caída estacional','Halloween (31)'],specials:[
+  T_('consejos','reel','Caída del cabello en otoño: ¿es normal?','En otoño se te cae más pelo. ¿Es normal?','Te explicamos la caída estacional.','Por qué pasa: …\nCuánto es normal: …\nCuándo consultar: …','Si dura más de dos o tres meses, consúltanos.','Comparte con quien lo esté notando.','Explicación a cámara.'),
+  T_('tendencias','reel','Peinados para Halloween','Tres peinados para Halloween.','Fáciles de hacer en casa.','Peinado 1: …\nPeinado 2: …\nPeinado 3: …','¿Cuál te pones?','Comenta tu favorito.','Tono divertido pero cuidado.')]},
+ 10:{topic:'la preparación del pelo para las fiestas',dates:['Black Friday','Preparar la Navidad'],specials:[
+  T_('promo','reel','Black Friday en el salón','Black Friday también en el salón.','Nuestra promoción de este año.','Qué incluye, fechas y cómo reservar.','Solo esos días.','Reserva desde el enlace.','Diseño claro con fechas.'),
+  T_('consejos','carrusel','Prepara tu pelo para diciembre','Diciembre llega: prepara tu pelo con tiempo.','Lo que conviene hacer ahora para lucirlo en las fiestas.','1. Sanear puntas.\n2. Tratamiento hidratante.\n3. Decidir color con tiempo.\n4. Reservar cita pronto.','En diciembre no hay huecos: adelántate.','Guárdalo y reserva ya.','Una diapositiva por paso.')]},
+ 11:{topic:'el pelo en las fiestas',dates:['Navidad','Nochevieja','Tarjeta regalo'],specials:[
+  T_('tendencias','reel','Peinados para cenas de Navidad y Nochevieja','Tres peinados para las cenas de estas fiestas.','Elegantes y que aguantan toda la noche.','Peinado 1: …\nPeinado 2: …\nPeinado 3: …','¿Cuál te harías para Nochevieja?','Comenta tu favorito y reserva.','Resultado final con luces de Navidad de fondo.'),
+  T_('promo','carrusel','Tarjeta regalo de Navidad','El regalo que sí se usa: regala un servicio.','Tarjeta regalo para Navidad y Reyes.','Servicios que se pueden regalar, precio y cómo pedirla.','Un regalo que se nota.','Escríbenos por privado para pedir la tuya.','Foto de la tarjeta con decoración navideña.'),
+  T_('equipo','reel','Nuestro año en el salón','Así ha sido nuestro año.','Un repaso a los mejores momentos.','Clips de trabajos, equipo y clientes del año.','Gracias por confiar en nosotros.','Síguenos para lo que viene el año que viene.','Montaje rápido con música animada.')]}
+};
+const SLOTS=[['consejos'],['antes','proceso'],['clientes','equipo','tendencias','promo']];
+let PLAN=null;
+function planMonthValue(){const [y,m]=$('pl-month').value.split('-').map(Number);return{y,m}}
+function rPlan(){
+  const sel=$('pl-month');
+  if(!sel.options.length){const n=new Date();for(let i=0;i<4;i++){const d=new Date(n.getFullYear(),n.getMonth()+i,1);sel.insertAdjacentHTML('beforeend',`<option value="${d.getFullYear()}-${d.getMonth()}">${cap(MESES[d.getMonth()])} ${d.getFullYear()}</option>`)}sel.selectedIndex=1}
+  const {m}=planMonthValue(),S=SEASON[m];
+  $('pl-theme').placeholder=`Ej. ${S.topic}`;
+  $('pl-theme-hint').textContent=`Si lo dejas vacío, usaré: "${S.topic}". Los lunes saldrá una serie de consejos profesionales sobre este tema.`;
+  $('pl-specials').innerHTML=S.dates.map(d=>`<div class="special">${esc(d)}</div>`).join('')+`<p class="small muted" style="margin:6px 0 0">Ya tengo ${S.specials.length} guiones preparados para estas fechas.</p>`;
+  drawPlan();
+}
+function slotOf(dt){const P=[...pubDays()].sort((a,b)=>((a+6)%7)-((b+6)%7));const i=P.indexOf(dt.getDay());return SLOTS[Math.max(0,i)%3]}
+function proFor(topic,pillars,used){
+  const cap1=x=>x.charAt(0).toUpperCase()+x.slice(1);
+  return shuffle(PRO.filter(f=>pillars.includes(f[0])).map(([p,f,ti,h,intro,body,closing,notes])=>{const fill=x=>x.replaceAll('{T}',cap1(topic)).replaceAll('{t}',topic);
+    return{pillar:p,format:f,title:fill(ti),hook:fill(h),intro,body,closing,cta:rnd(CTAS.filter(c=>!/etiqueta|amigo|parte 2/i.test(c))),notes}}).filter(o=>!used.has(o.title.toLowerCase())));
+}
+function candidates(pillars,ctx){
+  const out=[];
+  ctx.specials.filter(t=>pillars.includes(t.pillar)&&!ctx.used.has(t.title.toLowerCase())).forEach(t=>out.push({...t,src:'esp'}));
+  ctx.ideas.filter(i=>pillars.includes(i.pillar)&&!ctx.taken.has(i.id)).forEach(i=>out.push({...i,src:'lista'}));
+  if(pillars.some(p=>['consejos','proceso','antes','clientes','equipo'].includes(p)))proFor(ctx.theme,pillars,ctx.used).forEach(o=>out.push({...o,src:'nuevo'}));
+  shuffle(TEMPLATES.filter(t=>pillars.includes(t.pillar)&&!ctx.used.has(t.title.toLowerCase()))).forEach(t=>out.push({...t,src:'nuevo'}));
+  return out;
+}
+function planCtx(){
+  const {m}=planMonthValue();
+  return{theme:($('pl-theme').value.trim()||SEASON[m].topic),specials:SEASON[m].specials,ideas:ITEMS.filter(i=>!i.date),
+    used:new Set([...ITEMS.filter(i=>i.date).map(i=>i.title.toLowerCase()),...(PLAN?PLAN.rows.filter(r=>r.pick).map(r=>r.pick.title.toLowerCase()):[])]),
+    taken:new Set(PLAN?PLAN.rows.filter(r=>r.pick&&r.pick.src==='lista').map(r=>r.pick.id):[])};
+}
+function makePlan(){
+  const {y,m}=planMonthValue(),P=pubDays();PLAN={y,m,rows:[]};
+  const ctx=planCtx();
+  for(let d=1;d<=new Date(y,m+1,0).getDate();d++){
+    const dt=new Date(y,m,d),k=ymd(dt);if(!P.includes(dt.getDay()))continue;
+    const ex=on(k);if(ex.length){PLAN.rows.push({day:k,existing:ex});continue}
+    const pillars=slotOf(dt);
+    /* orden: lista de ideas → fecha especial → nuevo */
+    const c=candidates(pillars,ctx);
+    const pick=c.find(o=>o.src==='lista')||c.find(o=>o.src==='esp')||c[0]||null;
+    if(pick){ctx.used.add(pick.title.toLowerCase());if(pick.src==='lista')ctx.taken.add(pick.id);
+      if(!(pick.cast&&pick.cast.length))pick.cast=suggestCast(pick.pillar,pick.title)}
+    PLAN.rows.push({day:k,pillars,pick,skip:false});
+  }
+  /* las fechas especiales que no hayan entrado: sustituyen a guiones nuevos en huecos compatibles */
+  for(const sp of SEASON[m].specials){
+    if(PLAN.rows.some(r=>r.pick&&r.pick.title===sp.title))continue;
+    const r=PLAN.rows.find(r=>r.pick&&r.pick.src==='nuevo'&&r.pillars.includes(sp.pillar))||PLAN.rows.find(r=>r.pick&&r.pick.src==='nuevo'&&r.pillars.length>1);
+    if(r)r.pick={...sp,src:'esp',cast:suggestCast(sp.pillar,sp.title)};
+  }
+  drawPlan();
+  $('pl-out').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function otherOption(i){
+  const r=PLAN.rows[i];if(!r||!r.pick)return;
+  const cur=r.pick;r.pick=null;
+  const ctx=planCtx();ctx.used.add(cur.title.toLowerCase());
+  const c=candidates(r.pillars,ctx).filter(o=>o.title!==cur.title);
+  const pick=c.length?c[Math.floor(Math.random()*Math.min(c.length,6))]:cur;
+  if(!(pick.cast&&pick.cast.length))pick.cast=suggestCast(pick.pillar,pick.title);
+  r.pick=pick;drawPlan();
+}
+function drawPlan(){
+  const out=$('pl-out');
+  if(!PLAN){out.innerHTML='';return}
+  const {y,m}=PLAN,rows=PLAN.rows,todo=rows.filter(r=>r.pick&&!r.skip),fromList=todo.filter(r=>r.pick.src==='lista').length,esp=todo.filter(r=>r.pick.src==='esp').length,ex=rows.filter(r=>r.existing).length;
+  let h=`<div class="sumbox"><b>${cap(MESES[m])} ${y}</b>: ${rows.length} días de publicación.${ex?` ${ex} ya tienen contenido.`:''} Propuesta: <b>${todo.length} guiones</b> (${fromList} de tu lista, ${esp} de fechas especiales, ${todo.length-fromList-esp} nuevos).</div>`;
+  let wk='';
+  rows.forEach((r,i)=>{
+    const dt=pd(r.day),ws=ymd(weekStart(dt));
+    if(ws!==wk){wk=ws;const w=pd(ws);h+=`<div class="wk-h">Semana del ${w.getDate()} de ${MESES[w.getMonth()]}</div>`}
+    const dd=`${cap(DIAS[dt.getDay()]).slice(0,3)} ${dt.getDate()}`;
+    if(r.existing){h+=`<div class="prow"><div class="top"><span class="dd">${dd}</span><span class="src">Ya programado</span></div>${r.existing.map(e=>`<div class="t">${esc(e.title)}</div>`).join('')}</div>`;return}
+    if(!r.pick){h+=`<div class="prow"><div class="top"><span class="dd">${dd}</span></div><div class="m muted">No hay más opciones. Crea uno a mano desde el calendario.</div></div>`;return}
+    const o=r.pick,src=o.src==='lista'?['lista','De tu lista']:o.src==='esp'?['esp','Fecha especial']:['nuevo','Nuevo'];
+    h+=`<div class="prow ${r.skip?'skip':''}"><div class="top"><span class="dd">${dd}</span><span class="src ${src[0]}">${src[1]}</span><span class="small muted">${PILLARS[o.pillar]} · ${FORMATS[o.format]}</span></div>
+      <div class="t">${esc(o.title)}</div>${o.cast&&o.cast.length?`<div class="cast" style="margin-top:6px">${castHtml(o.cast)}</div>`:''}
+      <div class="row">${r.skip?`<button class="btn sm ghost" data-pl-skip="${i}">Volver a incluir</button>`:`<button class="btn sm ghost" data-pl-other="${i}">Otra opción</button><button class="btn sm ghost" data-pl-view="${i}">Ver guion</button><button class="mini" data-pl-skip="${i}">Quitar</button>`}</div></div>`;
+  });
+  h+=`<button class="btn solid" id="pl-save" style="width:100%;margin-top:24px" ${todo.length?'':'disabled'}>Guardar ${todo.length} guiones en el calendario</button>
+    <div class="plan-step" style="border:0;margin-top:20px"><span class="n">5</span><div class="b"><h3>Después de guardar</h3><ul style="margin:0;padding-left:18px;line-height:1.6">
+      <li>Repasa cada guion en el calendario y rellena los "…".</li><li>Pega un vídeo de referencia en los que lo necesiten.</li><li>Ajusta quién sale si hace falta.</li><li>Avisa al equipo con un apunte.</li></ul></div></div>`;
+  out.innerHTML=h;
+  const b=$('pl-save');if(b)b.onclick=savePlan;
+}
+async function savePlan(){
+  const todo=PLAN.rows.filter(r=>r.pick&&!r.skip);if(!todo.length)return;
+  if(!await ask(`¿Guardar ${todo.length} guiones en el calendario de ${MESES[PLAN.m]}?`,'Guardar'))return;
+  $('pl-save').disabled=true;$('pl-save').textContent='Guardando…';
+  for(const r of todo){
+    const o=r.pick;
+    if(o.src==='lista'){const it=ITEMS.find(x=>x.id===o.id);if(it)await saveItem({...it,date:r.day,status:it.status==='idea'?'guion':it.status,cast:(it.cast&&it.cast.length)?it.cast:o.cast})}
+    else{const {src,k,...t}=o;await saveItem({...asItem(t),status:'guion',date:r.day,cast:o.cast||[]})}
+  }
+  const m=PLAN.m,y=PLAN.y,n=todo.length;PLAN=null;
+  toast(`${n} guiones guardados`);
+  cal=new Date(y,m,1);selDay=ymd(cal);
+  if(await ask(`Guardado. ¿Quieres avisar al equipo con un apunte?`,'Avisar')){
+    go('calendario');openChat();$('ch-text').value=`Ya está el contenido de ${MESES[m]} en el calendario. Mirad qué os toca grabar en Vídeos en Drive.`;
+  }else go('calendario');
+}
+
 /* ============================== DRIVE ============================== */
 function rDrive(){
   const L=[['drive_main','Carpeta Redes','Todo el contenido del salón','main'],['drive_raw','1 Brutos','Sube aquí lo que grabes'],['drive_edit','2 Para editar','Para el editor'],['drive_done','3 Editados','Vídeos terminados'],['drive_pub','4 Publicados','Lo que ya ha salido'],['ig','Instagram','Perfil'],['tt','TikTok','Perfil']];
@@ -1057,6 +1236,9 @@ function ask(msg,yes){return new Promise(r=>{$('cf-msg').textContent=msg;$('cf-y
 document.addEventListener('click',async e=>{
   const t=e.target.closest('button,[data-open],[data-assign],[data-read]');if(!t)return;
   const d=t.dataset;
+  if(d.plOther!==undefined)return otherOption(+d.plOther);
+  if(d.plSkip!==undefined){const r=PLAN.rows[+d.plSkip];r.skip=!r.skip;return drawPlan()}
+  if(d.plView!==undefined){const r=PLAN.rows[+d.plView];picker(cap(nice(r.day)),card(r.pick,''));return}
   if(d.castToggle!==undefined){const n=d.castToggle;edCast=edCast.includes(n)?edCast.filter(x=>x!==n):[...edCast,n];return drawEdCast()}
   if(d.teamDel!==undefined){draftTeam.splice(+d.teamDel,1);return drawTeam()}
   if(d.giSave!==undefined){const o=GI[+d.giSave];if(!o||o.saved)return;
@@ -1091,6 +1273,8 @@ $('prev').onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()-1,1);rCal()
 $('next').onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()+1,1);rCal()};
 $('today').onclick=()=>{const n=new Date();cal=new Date(n.getFullYear(),n.getMonth(),1);selDay=ymd(n);rCal()};
 $('autoplan').onclick=autoPlan;
+$('pl-go').onclick=makePlan;
+$('pl-month').onchange=()=>{PLAN=null;rPlan()};
 $('s-team').addEventListener('change',e=>{const i=e.target.dataset.teamRole;if(i!==undefined)draftTeam[+i].role=e.target.value});
 $('s-team-add').onclick=()=>{const n=$('s-team-new').value.trim();if(!n)return;if(!draftTeam.some(m=>m.name.toLowerCase()===n.toLowerCase()))draftTeam.push({name:n,role:'sale'});$('s-team-new').value='';drawTeam()};
 $('fab').onclick=()=>openChat();
