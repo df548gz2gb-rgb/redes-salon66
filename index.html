@@ -269,6 +269,15 @@ input:focus,textarea:focus,select:focus{border-color:var(--blue)}
 .dt.off{opacity:.55}
 details.guide{margin-top:32px;border:1px solid var(--sky);border-radius:16px;padding:14px 16px}
 details.guide summary{font-weight:700;color:var(--navy);cursor:pointer}
+.cast{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pp{background:var(--sky);color:var(--navy);border-radius:999px;padding:3px 11px;font-size:13px;font-weight:600}
+.pp small{font-weight:500;opacity:.7}
+.castbox{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--ice);border:1px solid var(--sky);border-radius:12px;padding:10px 12px;margin-top:14px}
+.castbox .eyebrow{margin:0}
+.chip.cast-on{background:var(--blue);border-color:var(--blue);color:#fff}
+.trow{display:flex;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.trow b{flex:1;min-width:0;color:var(--navy)}
+.trow select{width:auto;padding:8px 10px;font-size:14px}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}</style>
 </head>
@@ -398,6 +407,8 @@ details.guide summary{font-weight:700;color:var(--navy);cursor:pointer}
     <div class="ph"><div class="eyebrow">Configuración</div><h1>Ajustes</h1></div>
     <div class="field"><label for="s-biz">Nombre del negocio</label><input type="text" id="s-biz" placeholder="Salón 66"></div>
     <div class="field"><label for="s-city">Ciudad (para hashtags)</label><input type="text" id="s-city" placeholder="Ej. Valencia"></div>
+    <div class="field"><label>Equipo y quién sale en los vídeos</label><div id="s-team" style="border-top:1px solid var(--line)"></div>
+      <div class="row" style="margin-top:10px;flex-wrap:nowrap"><input type="text" id="s-team-new" placeholder="Añadir un nombre" style="flex:1;min-width:0"><button class="btn sm ghost" id="s-team-add">Añadir</button></div></div>
     <div class="field"><label>Días de publicación</label><div class="chips" id="s-days"></div></div>
     <div class="field"><label for="s-drive_main">Carpeta Redes</label><input type="url" id="s-drive_main" placeholder="https://drive.google.com/…"></div>
     <div class="field"><label for="s-drive_raw">1 Brutos</label><input type="url" id="s-drive_raw" placeholder="https://drive.google.com/…"></div>
@@ -426,6 +437,7 @@ details.guide summary{font-weight:700;color:var(--navy);cursor:pointer}
       <button class="mini" id="ed-fill">Rellenar con un guion</button>
       <button class="mini" id="ed-nodate">Quitar fecha</button>
     </div>
+    <div class="field"><label>Quién sale <span class="small muted" style="font-weight:500">toca para elegir</span></label><div class="chips" id="ed-cast"></div></div>
     <div class="field"><label for="ed-ref">Vídeo de referencia (TikTok, Instagram…)<a class="mini" id="ed-ref-open" href="#" target="_blank" rel="noopener" hidden>Abrir ↗</a></label><input type="url" id="ed-ref" placeholder="Pega aquí el enlace del vídeo que te ha gustado"></div>
     <div class="field pt1"><label class="pl" for="ed-hook"><b>1 · Gancho</b><button class="mini" data-swap="hook">Otro</button></label><textarea id="ed-hook" placeholder="La frase de los primeros 3 segundos"></textarea></div>
     <div class="field pt2"><label class="pl" for="ed-intro"><b>2 · Entrada</b></label><textarea id="ed-intro" placeholder="De qué va, en una frase"></textarea></div>
@@ -455,6 +467,7 @@ details.guide summary{font-weight:700;color:var(--navy);cursor:pointer}
     <div class="sh"><div class="eyebrow" id="rd-date"></div><button class="x" data-close="reader" aria-label="Cerrar">×</button></div>
     <h2 id="rd-title" style="font-size:28px;line-height:1.1;margin-bottom:6px"></h2>
     <div class="muted small" id="rd-meta"></div>
+    <div class="castbox" id="rd-castbox" hidden><span class="eyebrow">Salen</span><div class="cast" id="rd-cast"></div></div>
     <a class="btn solid" id="rd-ref" href="#" target="_blank" rel="noopener" style="width:100%;margin-top:16px" hidden>Ver vídeo de referencia ↗</a>
     <div id="rd-parts" style="margin-top:20px"></div>
     <div class="field" style="margin-top:22px"><label for="rd-link">Enlace del vídeo en Drive (opcional)</label><input type="url" id="rd-link" placeholder="Pega aquí el enlace cuando lo subas"></div>
@@ -628,6 +641,7 @@ function openReader(id){
   const part=(l,v,c='')=>v?`<div class="rd-part ${c}"><div class="eyebrow">${l}</div><p>${esc(v)}</p></div>`:'';
   $('rd-parts').innerHTML=part('1 · Gancho',it.hook,'pt1')+part('2 · Entrada',it.intro,'pt2')+part('3 · Desarrollo',it.body,'pt3')+part('4 · Cierre',it.closing,'pt4')+part('5 · Llamada a la acción',it.cta,'pt5')+part('Cómo grabarlo',it.notes,'note ptn')
     ||'<p class="muted">Este contenido todavía no tiene guion.</p>';
+  $('rd-castbox').hidden=!(it.cast&&it.cast.length);$('rd-cast').innerHTML=castHtml(it.cast);
   $('rd-ref').hidden=!/^https?:\/\//.test(it.ref_url||'');if(it.ref_url)$('rd-ref').href=it.ref_url;
   $('rd-link').value=it.drive_url||'';
   const up=SETTINGS.drive_raw||SETTINGS.drive_main;
@@ -641,6 +655,27 @@ async function markRecorded(){
   const link=$('rd-link').value.trim();
   if(await saveItem({...it,status:'edicion',drive_url:link||it.drive_url||''})){hide('reader');toast('Marcado como grabado. ¡Gracias!');render()}
 }
+
+/* ============================== EQUIPO ============================== */
+const ROLES={explica:'Sale y explica',sale:'Sale en vídeos',aveces:'Sale a veces',nosale:'No suele salir'};
+const DEFAULT_TEAM=[{name:'Ariadna',role:'explica'},{name:'Óscar',role:'explica'},{name:'Noemi',role:'sale'},{name:'Jean-Pierre',role:'sale'},{name:'Eduardo',role:'aveces'},{name:'Cristian',role:'nosale'}];
+function team(){return Array.isArray(SETTINGS.team)&&SETTINGS.team.length?SETTINGS.team:DEFAULT_TEAM}
+function seeded(seed){let h=2166136261;for(const c of String(seed))h=Math.imul(h^c.charCodeAt(0),16777619);return()=>{h=Math.imul(h^(h>>>15),2246822507);h=Math.imul(h^(h>>>13),3266489909);return((h^=h>>>16)>>>0)/4294967296}}
+function suggestCast(pillar,title,seed){
+  const R=seed==null?Math.random:seeded(seed),pick=a=>a.length?a[Math.floor(R()*a.length)]:null;
+  const T=team(),by=r=>T.filter(m=>m.role===r).map(m=>m.name);
+  const exp=by('explica'),sale=by('sale'),av=by('aveces');
+  if(/equipo/i.test(title||''))return T.map(m=>m.name);
+  const out=[];const add=n=>{if(n&&!out.includes(n))out.push(n)};
+  if(['consejos','clientes','equipo'].includes(pillar)){add(pick(exp)||pick(sale));if(R()<.25)add(pick(sale))}
+  else if(['proceso','antes'].includes(pillar)){add(pick(sale)||pick(exp));if(R()<.5)add(pick(exp))}
+  else{add(pick([...sale,...exp]));add(pick([...sale,...exp]));if(av.length&&R()<.25)add(pick(av))}
+  return out;
+}
+function castHtml(c){return (c||[]).map(n=>{const m=team().find(x=>x.name===n);return `<span class="pp">${esc(n)}${m&&m.role==='explica'?' <small>explica</small>':''}</span>`}).join('')}
+let edCast=[];
+function drawEdCast(){const names=[...new Set([...team().map(m=>m.name),...edCast])];
+  $('ed-cast').innerHTML=names.map(n=>`<button class="chip ${edCast.includes(n)?'cast-on':''}" data-cast-toggle="${esc(n)}">${esc(n)}</button>`).join('')}
 
 /* ============================== APUNTES ============================== */
 let NOTES=[],ME={email:'',name:''};
@@ -764,7 +799,7 @@ function row(it,opts={}){
   const nx=opts.next&&NEXT[it.status];
   return `<div class="item" ${opts.assign?`data-assign="${it.id}"`:opts.read?`data-read="${it.id}"`:`data-open="${it.id}"`} role="button" tabindex="0">
     <div class="b"><div class="t">${esc(it.title)}</div>
-    <div class="m"><span class="stt ${it.status||'idea'}">${STATUSES[it.status]||'Idea'}</span>${meta.filter(Boolean).join(' · ')}${it.drive_url?' · con vídeo':''}${it.ref_url?' · con referencia':''}</div>
+    <div class="m"><span class="stt ${it.status||'idea'}">${STATUSES[it.status]||'Idea'}</span>${meta.filter(Boolean).join(' · ')}${it.cast&&it.cast.length?' · '+esc(it.cast.join(', ')):''}${it.drive_url?' · con vídeo':''}${it.ref_url?' · con referencia':''}</div>
     ${opts.hook&&it.hook?`<div class="q">“${esc(it.hook)}”</div>`:''}</div>
     ${nx?`<button class="btn sm ghost next" data-advance="${it.id}">${nx[1]}</button>`:'<span class="arr">→</span>'}</div>`;
 }
@@ -869,20 +904,20 @@ async function genIdeas(){
   const ideas=localIdeas(type,topic);
   giSrc='local';
   if(!ideas.length)toast('Ya has visto todas las ideas de ese tema. Prueba con otro.');
-  GI=ideas.map(o=>({...o,saved:false}));
+  GI=ideas.map(o=>({...o,cast:suggestCast(o.pillar,o.title),saved:false}));
   giBusy=false;btn.disabled=false;btn.textContent='Generar 5 ideas más';drawGI();
 }
 function drawGI(){
   $('gi-list').hidden=!GI.length;
   $('gi-status').textContent=!GI.length?'':'Guarda las que te gusten. Pulsa otra vez para ver más.';
   $('gi-list').innerHTML=GI.map((o,i)=>`<div class="item" style="cursor:default"><div class="b"><div class="t">${esc(o.title)}</div>
-    <div class="m">${PILLARS[o.pillar]} · ${FORMATS[o.format]}</div>${o.hook?`<div class="q">“${esc(o.hook)}”</div>`:''}${o.intro?`<div class="m" style="margin-top:6px">${esc(o.intro)}</div>`:''}</div>
+    <div class="m">${PILLARS[o.pillar]} · ${FORMATS[o.format]}</div>${o.cast&&o.cast.length?`<div class="cast" style="margin-top:8px">${castHtml(o.cast)}</div>`:''}${o.hook?`<div class="q">“${esc(o.hook)}”</div>`:''}${o.intro?`<div class="m" style="margin-top:6px">${esc(o.intro)}</div>`:''}</div>
     <button class="btn sm ${o.saved?'solid':'ghost'} next" data-gi-save="${i}">${o.saved?'Guardada':'Guardar'}</button></div>`).join('');
 }
-function setEd(o){for(const[f,k]of Object.entries(F))$('ed-'+f).value=o[k]||'';
+function setEd(o){for(const[f,k]of Object.entries(F))$('ed-'+f).value=o[k]||'';edCast=Array.isArray(o.cast)?[...o.cast]:[];drawEdCast();
   if(!o.pillar)$('ed-pillar').value='consejos';if(!o.format)$('ed-format').value='reel';if(!o.status)$('ed-status').value='idea';updOpen()}
 function firstUrl(t){const m=String(t||'').match(/https?:\/\/\S+/);return m?m[0].replace(/[),.]+$/,''):String(t||'').trim()}
-function getEd(){const o={};for(const[f,k]of Object.entries(F))o[k]=$('ed-'+f).value.trim();o.date=o.date||null;o.ref_url=firstUrl(o.ref_url);return o}
+function getEd(){const o={};for(const[f,k]of Object.entries(F))o[k]=$('ed-'+f).value.trim();o.date=o.date||null;o.ref_url=firstUrl(o.ref_url);o.cast=[...edCast];return o}
 function updOpen(){const u=$('ed-drive').value.trim();$('ed-open').hidden=!/^https?:\/\//.test(u);$('ed-open').href=u||'#';
   const r=firstUrl($('ed-ref').value);$('ed-ref-open').hidden=!/^https?:\/\//.test(r);$('ed-ref-open').href=r||'#'}
 function openEd(it,isNew){editing=isNew?null:it.id;setEd(it);
@@ -914,7 +949,7 @@ function tags(){
   $('ed-hashtags').value=t.join(' ');
 }
 function scriptTxt(o){return[o.title,`${PILLARS[o.pillar]||''} · ${FORMATS[o.format]||''}${o.date?' · '+nice(o.date):''}`,'',
-  o.hook&&`GANCHO\n${o.hook}`,o.intro&&`ENTRADA\n${o.intro}`,o.body&&`DESARROLLO\n${o.body}`,o.closing&&`CIERRE\n${o.closing}`,o.cta&&`LLAMADA A LA ACCIÓN\n${o.cta}`,o.ref_url&&`VÍDEO DE REFERENCIA\n${o.ref_url}`,o.notes&&`NOTAS DE GRABACIÓN\n${o.notes}`].filter(x=>x!==''&&x).join('\n\n')}
+  o.hook&&`GANCHO\n${o.hook}`,o.intro&&`ENTRADA\n${o.intro}`,o.body&&`DESARROLLO\n${o.body}`,o.closing&&`CIERRE\n${o.closing}`,o.cta&&`LLAMADA A LA ACCIÓN\n${o.cta}`,o.cast&&o.cast.length&&`QUIÉN SALE\n${o.cast.join(', ')}`,o.ref_url&&`VÍDEO DE REFERENCIA\n${o.ref_url}`,o.notes&&`NOTAS DE GRABACIÓN\n${o.notes}`].filter(x=>x!==''&&x).join('\n\n')}
 function captionOf(t){return[t.hook,t.intro,t.closing,t.cta].filter(Boolean).join('\n\n')}
 async function copy(text,msg){
   try{await navigator.clipboard.writeText(text);toast(msg||'Copiado')}
@@ -925,12 +960,13 @@ function tplPicker(){
   const p=$('ed-pillar').value,list=TEMPLATES.map((t,i)=>[t,i]).sort((a,b)=>(b[0].pillar===p)-(a[0].pillar===p));
   picker('Elegir guion',list.map(([t,i])=>`<button class="item" data-tpl="${i}"><span class="b"><span class="t" style="display:block">${esc(t.title)}</span><span class="m" style="display:block">${PILLARS[t.pillar]} · ${FORMATS[t.format]}</span><span class="q" style="display:block">“${esc(t.hook)}”</span></span><span class="arr">→</span></button>`).join(''));
 }
-function applyTpl(i){const t=TEMPLATES[i],c=getEd();setEd({...c,...t,title:c.title||t.title,date:c.date,status:c.status,drive_url:c.drive_url,caption:c.caption||captionOf(t)});hide('picker')}
+function applyTpl(i){const t=TEMPLATES[i],c=getEd();setEd({...c,...t,title:c.title||t.title,date:c.date,status:c.status,drive_url:c.drive_url,ref_url:c.ref_url,caption:c.caption||captionOf(t),cast:c.cast.length?c.cast:suggestCast(t.pillar,t.title)});hide('picker')}
 
 /* ============================== GUIONES ============================== */
 function card(t,acts,feature){
   const part=(l,v,c)=>v?`<div class="part ${c}"><span class="k">${l}</span><p>${esc(v)}</p></div>`:'';
   return `<article class="script ${feature?'feature':''}"><div class="eyebrow">${PILLARS[t.pillar]} · ${FORMATS[t.format]}</div><h3>${esc(t.title)}</h3>
+   ${(t.cast&&t.cast.length)?`<div class="castbox" style="margin:0 0 6px"><span class="eyebrow">Pensado para</span><div class="cast">${castHtml(t.cast)}</div></div>`:''}
    ${part('1 · Gancho',t.hook,'pt1')}${part('2 · Entrada',t.intro,'pt2')}${part('3 · Desarrollo',t.body,'pt3')}${part('4 · Cierre',t.closing,'pt4')}${part('5 · Llamada a la acción',t.cta,'pt5')}${part('Cómo grabarlo',t.notes,'ptn')}
    <div class="row">${acts}</div></article>`;
 }
@@ -938,11 +974,11 @@ function rGen(){
   if(!gCur||gCur.pillar!==$('gen-type').value)generate();else drawGen();
   const f=$('tpl-filter').value,list=TEMPLATES.map((t,i)=>[t,i]).filter(([t])=>f==='all'||t.pillar===f);
   $('tpl-count').textContent=`${list.length} guiones`;
-  $('tpl-list').innerHTML=list.map(([t,i])=>card(t,`<button class="btn sm ghost" data-save-tpl="${i}">Guardar en ideas</button><button class="btn sm ghost" data-copy-tpl="${i}">Copiar</button>`)).join('');
+  $('tpl-list').innerHTML=list.map(([t,i])=>card({...t,cast:suggestCast(t.pillar,t.title,t.title)},`<button class="btn sm ghost" data-save-tpl="${i}">Guardar en ideas</button><button class="btn sm ghost" data-copy-tpl="${i}">Copiar</button>`)).join('');
 }
-function generate(){const p=$('gen-type').value,pool=TEMPLATES.filter(t=>t.pillar===p),b=rnd(pool);gCur={...b,hook:rnd([b.hook,...HOOKS[p]]),cta:rnd([b.cta,...CTAS])};drawGen()}
+function generate(){const p=$('gen-type').value,pool=TEMPLATES.filter(t=>t.pillar===p),b=rnd(pool);gCur={...b,hook:rnd([b.hook,...HOOKS[p]]),cta:rnd([b.cta,...CTAS]),cast:suggestCast(b.pillar,b.title)};drawGen()}
 function drawGen(){$('gen-out').innerHTML=card(gCur,`<button class="btn sm solid" data-g="new">Otra idea</button><button class="btn sm ghost" data-g="hook">Otro gancho</button><button class="btn sm ghost" data-g="cta">Otra llamada</button><button class="btn sm ghost" data-g="save">Guardar en ideas</button><button class="btn sm ghost" data-g="plan">Programar</button>`,true)}
-function asItem(t){return{title:t.title,pillar:t.pillar,format:t.format,status:'idea',hook:t.hook,intro:t.intro,body:t.body,closing:t.closing,cta:t.cta,caption:captionOf(t),hashtags:'',notes:t.notes||'',drive_url:'',date:null}}
+function asItem(t){return{cast:t.cast||suggestCast(t.pillar,t.title,t.title),title:t.title,pillar:t.pillar,format:t.format,status:'idea',hook:t.hook,intro:t.intro,body:t.body,closing:t.closing,cta:t.cta,caption:captionOf(t),hashtags:'',notes:t.notes||'',drive_url:'',date:null}}
 function nextFree(){const P=pubDays(),d=new Date();for(let i=0;i<120;i++){const x=addDays(d,i),k=ymd(x);if(P.includes(x.getDay())&&!on(k).length)return k}return ymd(d)}
 
 /* ============================== DRIVE ============================== */
@@ -1005,7 +1041,9 @@ function rTips(){
 /* ============================== AJUSTES ============================== */
 const SK=['biz','city','drive_main','drive_raw','drive_edit','drive_done','drive_pub','ig','tt'];
 let draftDays=null;
-function rSet(){SK.forEach(k=>$('s-'+k).value=SETTINGS[k]||'');draftDays=[...pubDays()];drawDays()}
+let draftTeam=[];
+function rSet(){SK.forEach(k=>$('s-'+k).value=SETTINGS[k]||'');draftDays=[...pubDays()];drawDays();draftTeam=team().map(m=>({...m}));drawTeam()}
+function drawTeam(){$('s-team').innerHTML=draftTeam.map((m,i)=>`<div class="trow"><b>${esc(m.name)}</b><select data-team-role="${i}" aria-label="Cuánto sale ${esc(m.name)}">${Object.entries(ROLES).map(([k,v])=>`<option value="${k}" ${m.role===k?'selected':''}>${v}</option>`).join('')}</select><button class="mini" data-team-del="${i}">Quitar</button></div>`).join('')||'<div class="empty" style="padding:12px 0">Sin nombres.</div>'}
 function drawDays(){const N={1:'Lun',2:'Mar',3:'Mié',4:'Jue',5:'Vie',6:'Sáb',0:'Dom'};$('s-days').innerHTML=[1,2,3,4,5,6,0].map(d=>`<button class="chip ${draftDays.includes(d)?'on':''}" data-day-toggle="${d}">${N[d]}</button>`).join('')}
 
 /* ============================== HOJAS ============================== */
@@ -1019,8 +1057,10 @@ function ask(msg,yes){return new Promise(r=>{$('cf-msg').textContent=msg;$('cf-y
 document.addEventListener('click',async e=>{
   const t=e.target.closest('button,[data-open],[data-assign],[data-read]');if(!t)return;
   const d=t.dataset;
+  if(d.castToggle!==undefined){const n=d.castToggle;edCast=edCast.includes(n)?edCast.filter(x=>x!==n):[...edCast,n];return drawEdCast()}
+  if(d.teamDel!==undefined){draftTeam.splice(+d.teamDel,1);return drawTeam()}
   if(d.giSave!==undefined){const o=GI[+d.giSave];if(!o||o.saved)return;
-    if(await saveItem({title:o.title,pillar:o.pillar,format:o.format,status:'idea',hook:o.hook,intro:o.intro||'',body:o.body||'',closing:o.closing||'',cta:o.cta||rnd(CTAS),caption:'',hashtags:'',notes:o.notes||'',ref_url:'',drive_url:'',date:null})){o.saved=true;drawGI();toast('Guardada en la lista de ideas')}return}
+    if(await saveItem({title:o.title,pillar:o.pillar,format:o.format,status:'idea',hook:o.hook,intro:o.intro||'',body:o.body||'',closing:o.closing||'',cta:o.cta||rnd(CTAS),caption:'',hashtags:'',notes:o.notes||'',ref_url:'',cast:o.cast||[],drive_url:'',date:null})){o.saved=true;drawGI();toast('Guardada en la lista de ideas')}return}
   if(d.advance){const it=ITEMS.find(x=>x.id===d.advance);if(it&&NEXT[it.status]){const ns=NEXT[it.status][0];if(await saveItem({...it,status:ns})){toast(STATUSES[ns]);render()}}return}
   if(d.go){hide('picker');return go(d.go)}
   if(d.close)return hide(d.close);
@@ -1051,6 +1091,8 @@ $('prev').onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()-1,1);rCal()
 $('next').onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()+1,1);rCal()};
 $('today').onclick=()=>{const n=new Date();cal=new Date(n.getFullYear(),n.getMonth(),1);selDay=ymd(n);rCal()};
 $('autoplan').onclick=autoPlan;
+$('s-team').addEventListener('change',e=>{const i=e.target.dataset.teamRole;if(i!==undefined)draftTeam[+i].role=e.target.value});
+$('s-team-add').onclick=()=>{const n=$('s-team-new').value.trim();if(!n)return;if(!draftTeam.some(m=>m.name.toLowerCase()===n.toLowerCase()))draftTeam.push({name:n,role:'sale'});$('s-team-new').value='';drawTeam()};
 $('fab').onclick=()=>openChat();
 $('ch-send').onclick=sendNote;
 $('rd-note').onclick=()=>{const id=reading;hide('reader');openChat(id)};
@@ -1070,7 +1112,7 @@ $('ed-drive').oninput=updOpen;$('ed-ref').oninput=updOpen;
 $('ed-copy-script').onclick=()=>copy(scriptTxt(getEd()),'Guion copiado');
 $('ed-copy-cap').onclick=()=>{const o=getEd();copy([o.caption||captionOf(o),o.hashtags].filter(Boolean).join('\n\n'),'Texto copiado')};
 document.querySelectorAll('.sheetbg').forEach(s=>s.addEventListener('click',e=>{if(e.target===s&&s.id!=='confirm')hide(s.id)}));
-$('save-settings').onclick=async()=>{const o={pub_days:draftDays};SK.forEach(k=>o[k]=$('s-'+k).value.trim());if(await saveSettings(o)){applyBiz();toast('Ajustes guardados')}};
+$('save-settings').onclick=async()=>{const o={pub_days:draftDays,team:draftTeam};SK.forEach(k=>o[k]=$('s-'+k).value.trim());if(await saveSettings(o)){applyBiz();toast('Ajustes guardados')}};
 window.addEventListener('hashchange',()=>{const v=location.hash.slice(1)||'inicio';if(v!==view)go(v,false)});
 
 fillSel();
