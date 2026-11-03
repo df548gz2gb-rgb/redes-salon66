@@ -432,6 +432,8 @@ details.guide summary{font-weight:700;color:var(--navy);cursor:pointer}
     <div class="bar"><button class="back" data-go="inicio">← Inicio</button></div>
     <div class="ph"><div class="eyebrow">Grabaciones</div><h1 id="ps-title">Vídeos</h1><p id="ps-sum"></p></div>
     <div class="pchips" id="ps-chips"></div>
+    <div class="wk-h" style="margin-top:18px">Meses</div>
+    <div class="pchips" id="ps-months"></div>
     <div id="ps-list"></div>
   </section>
 
@@ -760,6 +762,7 @@ async function setReviewed(id,val){
 
 /* ============================== VÍDEOS POR PERSONA ============================== */
 function isAparte(m){return m.aparte===undefined?m.name==='Óscar':!!m.aparte}
+let PMONTH=null;
 let PERSON=(()=>{try{return localStorage.getItem('redes66-persona')}catch(e){return null}})();
 function openPerson(n){PERSON=n;try{localStorage.setItem('redes66-persona',n)}catch(e){}go('persona')}
 function rPerson(){
@@ -768,12 +771,19 @@ function rPerson(){
   $('ps-title').textContent=`Vídeos de ${n}`;
   $('ps-chips').innerHTML=T.filter(m=>m.role!=='nosale'||m.name===n).map(m=>`<button class="chip ${m.name===n?'on':''}" data-person="${esc(m.name)}">${esc(m.name)}</button>`).join('');
   const mine=ITEMS.filter(i=>i.date&&(i.cast||[]).includes(n));
-  const pend=mine.filter(i=>TO_RECORD.includes(i.status)).sort((a,b)=>a.date.localeCompare(b.date));
-  const done=mine.filter(i=>!TO_RECORD.includes(i.status)).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8);
-  const groups=[['Atrasados',pend.filter(i=>i.date<tk)],['Por grabar',pend.filter(i=>i.date>=tk)],['Ya grabados',done]];
-  $('ps-sum').textContent=pend.length?`${pend.length} vídeo${pend.length>1?'s':''} por grabar · ${pend.filter(i=>i.reviewed).length} revisado${pend.filter(i=>i.reviewed).length===1?'':'s'} y listo${pend.filter(i=>i.reviewed).length===1?'':'s'}`:'No tiene vídeos pendientes.';
-  $('ps-list').innerHTML=groups.filter(([,l])=>l.length).map(([h,l])=>`<div class="sec" style="margin-top:28px"><div class="sec-h"><h2>${h}</h2><span class="count">${l.length}</span></div><div class="list">${l.map(i=>row(i,{date:true,read:true})).join('')}</div></div>`).join('')
-    ||`<div class="empty" style="border-top:1px solid var(--line)">Cuando un vídeo del calendario tenga a ${esc(n)} en "Quién sale", aparecerá aquí.</div>`;
+  const cur=tk.slice(0,7),months=[...new Set([cur,...mine.map(i=>i.date.slice(0,7))])].filter(m=>m>=cur||mine.some(i=>i.date.startsWith(m)&&TO_RECORD.includes(i.status))).sort();
+  if(!PMONTH||!months.includes(PMONTH))PMONTH=months.find(m=>mine.some(i=>i.date.startsWith(m)&&TO_RECORD.includes(i.status)))||cur;
+  const mName=m=>{const [y,mm]=m.split('-').map(Number);return cap(MESES[mm-1])+(y!==new Date().getFullYear()?' '+y:'')};
+  $('ps-months').innerHTML=months.map(m=>{const c=mine.filter(i=>i.date.startsWith(m)&&TO_RECORD.includes(i.status)).length;
+    return `<button class="chip ${m===PMONTH?'on':''}" data-pmonth="${m}">${mName(m)}${c?` · ${c}`:''}</button>`}).join('');
+  const inM=mine.filter(i=>i.date.startsWith(PMONTH));
+  const pend=inM.filter(i=>TO_RECORD.includes(i.status)).sort((a,b)=>a.date.localeCompare(b.date));
+  const done=inM.filter(i=>!TO_RECORD.includes(i.status)).sort((a,b)=>a.date.localeCompare(b.date));
+  const totalPend=mine.filter(i=>TO_RECORD.includes(i.status)).length;
+  $('ps-sum').textContent=totalPend?`${totalPend} vídeo${totalPend>1?'s':''} por grabar en total`:'No tiene vídeos pendientes.';
+  const groups=[[`Por grabar en ${mName(PMONTH).toLowerCase()}`,pend],['Ya grabados',done]];
+  $('ps-list').innerHTML=groups.filter(([,l])=>l.length).map(([h,l])=>`<div class="sec" style="margin-top:24px"><div class="sec-h"><h2>${h}</h2><span class="count">${l.length}</span></div><div class="list">${l.map(i=>row(i,{date:true,read:true})).join('')}</div></div>`).join('')
+    ||`<div class="empty" style="border-top:1px solid var(--line);margin-top:16px">${esc(n)} no tiene vídeos en ${mName(PMONTH).toLowerCase()}.</div>`;
 }
 function drawPersonCards(){
   const ap=team().filter(isAparte),tk=ymd(new Date());
@@ -1320,6 +1330,7 @@ document.addEventListener('click',async e=>{
   if(d.plOther!==undefined)return otherOption(+d.plOther);
   if(d.plSkip!==undefined){const r=PLAN.rows[+d.plSkip];r.skip=!r.skip;return drawPlan()}
   if(d.plView!==undefined){const r=PLAN.rows[+d.plView];picker(cap(nice(r.day)),card(r.pick,''));return}
+  if(d.pmonth){PMONTH=d.pmonth;return rPerson()}
   if(d.review)return setReviewed(d.review,true);
   if(d.unreview)return setReviewed(d.unreview,false);
   if(d.person!==undefined){if(view==='persona'){PERSON=d.person;try{localStorage.setItem('redes66-persona',d.person)}catch(e){}return rPerson()}return openPerson(d.person)}
