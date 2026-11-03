@@ -309,6 +309,11 @@ details.guide summary{font-weight:700;color:var(--navy);cursor:pointer}
 .pchips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
 .aparte{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:5px 10px;background:var(--bg);color:var(--muted);white-space:nowrap}
 .aparte.on{background:var(--navy);border-color:var(--navy);color:var(--inv-fg)}
+.ideabox{margin-top:14px;background:var(--bg);border:2px solid var(--navy);border-radius:14px;padding:14px 16px}
+.ideabox .eyebrow{margin-bottom:6px}
+.ideabox p{margin:0;font-size:16px;line-height:1.5;white-space:pre-line;color:var(--fg)}
+.ideabox.empty-idea{border:1.5px dashed var(--sky);padding:10px 14px}
+textarea.idea-ta{min-height:90px;border:2px solid var(--navy)}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}</style>
 </head>
@@ -486,6 +491,7 @@ details.guide summary{font-weight:700;color:var(--navy);cursor:pointer}
   <div class="sheet" role="dialog" aria-labelledby="ed-h">
     <div class="sh"><h2 id="ed-h">Contenido</h2><button class="x" data-close="editor" aria-label="Cerrar">×</button></div>
     <div class="field"><label for="ed-title">Título o tema</label><input type="text" id="ed-title" placeholder="Ej. Degradado paso a paso"></div>
+    <div class="field"><label for="ed-notes">Idea del vídeo</label><textarea id="ed-notes" class="idea-ta" placeholder="Resumen y concepto: de qué va, qué queremos transmitir, cómo lo imaginamos y cómo grabarlo"></textarea></div>
     <div class="two">
       <div class="field"><label for="ed-pillar">Tipo</label><select id="ed-pillar"></select></div>
       <div class="field"><label for="ed-format">Formato</label><select id="ed-format"></select></div>
@@ -506,7 +512,6 @@ details.guide summary{font-weight:700;color:var(--navy);cursor:pointer}
     <div class="field"><label for="ed-caption">Texto de la publicación</label><textarea id="ed-caption" style="min-height:96px"></textarea></div>
     <div class="field"><label for="ed-hashtags">Hashtags <button class="mini" id="ed-tags">Sugerir</button></label><textarea id="ed-hashtags" style="min-height:50px"></textarea></div>
     <div class="field"><label for="ed-drive">Enlace del vídeo en Drive</label><input type="url" id="ed-drive" placeholder="https://drive.google.com/…"></div>
-    <div class="field"><label for="ed-notes">Notas de grabación</label><textarea id="ed-notes"></textarea></div>
     <div class="acts">
       <button class="btn ghost" id="ed-copy-script">Copiar guion</button>
       <button class="btn ghost" id="ed-copy-cap">Copiar texto</button>
@@ -527,6 +532,7 @@ details.guide summary{font-weight:700;color:var(--navy);cursor:pointer}
     <div class="revbar" id="rd-rev" hidden></div>
     <h2 id="rd-title" style="font-size:28px;line-height:1.1;margin-bottom:6px"></h2>
     <div class="muted small" id="rd-meta"></div>
+    <div class="ideabox" id="rd-idea"></div>
     <div class="castbox" id="rd-castbox" hidden><span class="eyebrow">Salen</span><div class="cast" id="rd-cast"></div></div>
     <div class="warnbox" id="rd-warn" hidden><span>Este guion está sin terminar.</span><button class="btn sm solid" id="rd-complete">Completar guion</button></div>
     <a class="btn solid" id="rd-ref" href="#" target="_blank" rel="noopener" style="width:100%;margin-top:16px" hidden>Ver vídeo de referencia ↗</a>
@@ -701,9 +707,11 @@ function openReader(id){
   $('rd-title').textContent=it.title;
   $('rd-meta').textContent=`${PILLARS[it.pillar]||''} · ${FORMATS[it.format]||''}`;
   const part=(l,v,c='')=>v?`<div class="rd-part ${c}"><div class="eyebrow">${l}</div><p>${esc(v)}</p></div>`:'';
-  $('rd-parts').innerHTML=part('1 · Gancho',it.hook,'pt1')+part('2 · Entrada',it.intro,'pt2')+part('3 · Desarrollo',it.body,'pt3')+part('4 · Cierre',it.closing,'pt4')+part('5 · Llamada a la acción',it.cta,'pt5')+part('Cómo grabarlo',it.notes,'note ptn')
+  $('rd-parts').innerHTML=part('1 · Gancho',it.hook,'pt1')+part('2 · Entrada',it.intro,'pt2')+part('3 · Desarrollo',it.body,'pt3')+part('4 · Cierre',it.closing,'pt4')+part('5 · Llamada a la acción',it.cta,'pt5')+''
     ||'<p class="muted">Este contenido todavía no tiene guion.</p>';
   $('rd-warn').hidden=scriptComplete(it);
+  $('rd-idea').innerHTML=String(it.notes||'').trim()?`<div class="eyebrow">Idea del vídeo</div><p>${esc(it.notes)}</p>`:`<button class="link-btn" data-idea-add="${it.id}">+ Añadir la idea del vídeo</button>`;
+  $('rd-idea').classList.toggle('empty-idea',!String(it.notes||'').trim());
   drawRev(it);
   $('rd-castbox').hidden=!(it.cast&&it.cast.length);$('rd-cast').innerHTML=castHtml(it.cast);
   $('rd-ref').hidden=!/^https?:\/\//.test(it.ref_url||'');if(it.ref_url)$('rd-ref').href=it.ref_url;
@@ -1057,7 +1065,7 @@ function tags(){
   $('ed-hashtags').value=t.join(' ');
 }
 function scriptTxt(o){return[o.title,`${PILLARS[o.pillar]||''} · ${FORMATS[o.format]||''}${o.date?' · '+nice(o.date):''}`,'',
-  o.hook&&`GANCHO\n${o.hook}`,o.intro&&`ENTRADA\n${o.intro}`,o.body&&`DESARROLLO\n${o.body}`,o.closing&&`CIERRE\n${o.closing}`,o.cta&&`LLAMADA A LA ACCIÓN\n${o.cta}`,o.cast&&o.cast.length&&`QUIÉN SALE\n${o.cast.join(', ')}`,o.ref_url&&`VÍDEO DE REFERENCIA\n${o.ref_url}`,o.notes&&`NOTAS DE GRABACIÓN\n${o.notes}`].filter(x=>x!==''&&x).join('\n\n')}
+  o.notes&&`IDEA DEL VÍDEO\n${o.notes}`,o.hook&&`GANCHO\n${o.hook}`,o.intro&&`ENTRADA\n${o.intro}`,o.body&&`DESARROLLO\n${o.body}`,o.closing&&`CIERRE\n${o.closing}`,o.cta&&`LLAMADA A LA ACCIÓN\n${o.cta}`,o.cast&&o.cast.length&&`QUIÉN SALE\n${o.cast.join(', ')}`,o.ref_url&&`VÍDEO DE REFERENCIA\n${o.ref_url}`].filter(x=>x!==''&&x).join('\n\n')}
 function captionOf(t){return[t.hook,t.intro,t.closing,t.cta].filter(Boolean).join('\n\n')}
 async function copy(text,msg){
   try{await navigator.clipboard.writeText(text);toast(msg||'Copiado')}
@@ -1084,7 +1092,7 @@ function card(t,acts,feature){
   const part=(l,v,c)=>v?`<div class="part ${c}"><span class="k">${l}</span><p>${esc(v)}</p></div>`:'';
   return `<article class="script ${feature?'feature':''}"><div class="eyebrow">${PILLARS[t.pillar]} · ${FORMATS[t.format]}</div><h3>${esc(t.title)}</h3>
    ${(t.cast&&t.cast.length)?`<div class="castbox" style="margin:0 0 6px"><span class="eyebrow">Pensado para</span><div class="cast">${castHtml(t.cast)}</div></div>`:''}
-   ${part('1 · Gancho',t.hook,'pt1')}${part('2 · Entrada',t.intro,'pt2')}${part('3 · Desarrollo',t.body,'pt3')}${part('4 · Cierre',t.closing,'pt4')}${part('5 · Llamada a la acción',t.cta,'pt5')}${part('Cómo grabarlo',t.notes,'ptn')}
+   ${part('1 · Gancho',t.hook,'pt1')}${part('2 · Entrada',t.intro,'pt2')}${part('3 · Desarrollo',t.body,'pt3')}${part('4 · Cierre',t.closing,'pt4')}${part('5 · Llamada a la acción',t.cta,'pt5')}${part('Idea del vídeo',t.notes,'ptn')}
    <div class="row">${acts}</div></article>`;
 }
 function rGen(){
@@ -1330,6 +1338,7 @@ document.addEventListener('click',async e=>{
   if(d.plOther!==undefined)return otherOption(+d.plOther);
   if(d.plSkip!==undefined){const r=PLAN.rows[+d.plSkip];r.skip=!r.skip;return drawPlan()}
   if(d.plView!==undefined){const r=PLAN.rows[+d.plView];picker(cap(nice(r.day)),card(r.pick,''));return}
+  if(d.ideaAdd){const it=ITEMS.find(x=>x.id===d.ideaAdd);hide('reader');if(it){openEd(it,false);setTimeout(()=>$('ed-notes').focus(),80)}return}
   if(d.pmonth){PMONTH=d.pmonth;return rPerson()}
   if(d.review)return setReviewed(d.review,true);
   if(d.unreview)return setReviewed(d.unreview,false);
