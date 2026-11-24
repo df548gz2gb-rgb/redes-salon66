@@ -314,6 +314,14 @@ details.guide summary{font-weight:700;color:var(--navy);cursor:pointer}
 .ideabox p{margin:0;font-size:16px;line-height:1.5;white-space:pre-line;color:var(--fg)}
 .ideabox.empty-idea{border:1.5px dashed var(--sky);padding:10px 14px}
 textarea.idea-ta{min-height:90px;border:2px solid var(--navy)}
+.phead{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.dur{font-size:11.5px;font-weight:700;color:var(--pc,var(--blue));background:var(--bg);border-radius:999px;padding:1px 8px;white-space:nowrap}
+.recbox{margin-top:10px;background:var(--bg);border:1px dashed var(--pc,var(--blue));border-radius:10px;padding:8px 11px}
+.recbox .rl,.recopt label{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pc,var(--blue));margin-bottom:3px}
+.recbox svg,.recopt svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.recbox p{font-size:14.5px !important;line-height:1.45;color:var(--fg);margin:0}
+.recopt{margin-top:8px}
+.recopt textarea{min-height:88px !important;font-size:14.5px;border:1px dashed var(--pc,var(--blue)) !important;border-left:1px dashed var(--pc,var(--blue)) !important;background:var(--bg) !important}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}</style>
 </head>
@@ -501,14 +509,15 @@ textarea.idea-ta{min-height:90px;border:2px solid var(--navy)}
     <div class="row" style="margin-bottom:20px;gap:20px">
       <button class="mini" id="ed-fill">Completar con un guion</button>
       <button class="mini" id="ed-nodate">Quitar fecha</button>
+      <button class="mini" id="ed-recsug">Sugerir opciones de grabación</button>
     </div>
     <div class="field"><label>Quién sale <span class="small muted" style="font-weight:500">toca para elegir</span></label><div class="chips" id="ed-cast"></div></div>
     <div class="field"><label for="ed-ref">Vídeo de referencia (TikTok, Instagram…)<a class="mini" id="ed-ref-open" href="#" target="_blank" rel="noopener" hidden>Abrir ↗</a></label><input type="url" id="ed-ref" placeholder="Pega aquí el enlace del vídeo que te ha gustado"></div>
-    <div class="field pt1"><label class="pl" for="ed-hook"><b>1 · Gancho</b><button class="mini" data-swap="hook">Otro</button></label><textarea id="ed-hook" placeholder="La frase de los primeros 3 segundos"></textarea></div>
-    <div class="field pt2"><label class="pl" for="ed-intro"><b>2 · Entrada</b></label><textarea id="ed-intro" placeholder="De qué va, en una frase"></textarea></div>
-    <div class="field pt3"><label class="pl" for="ed-body"><b>3 · Desarrollo</b></label><textarea id="ed-body" style="min-height:110px" placeholder="Los pasos o el proceso"></textarea></div>
-    <div class="field pt4"><label class="pl" for="ed-closing"><b>4 · Cierre</b><button class="mini" data-swap="closing">Otro</button></label><textarea id="ed-closing" placeholder="El resultado o el remate"></textarea></div>
-    <div class="field pt5"><label class="pl" for="ed-cta"><b>5 · Llamada a la acción</b><button class="mini" data-swap="cta">Otra</button></label><textarea id="ed-cta" placeholder="Si te ha gustado, síguenos para más"></textarea></div>
+    <div class="field pt1"><label class="pl" for="ed-hook"><b>1 · Gancho</b><button class="mini" data-swap="hook">Otro</button></label><textarea id="ed-hook" placeholder="La frase de los primeros 3 segundos"></textarea><div class="recopt"><label for="ed-rec_hook"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10.5l5-3v9l-5-3z"/></svg>Opciones de grabación</label><textarea id="ed-rec_hook" placeholder="Planos, ángulo, quién habla, texto en pantalla, música…"></textarea></div></div>
+    <div class="field pt2"><label class="pl" for="ed-intro"><b>2 · Entrada</b></label><textarea id="ed-intro" placeholder="De qué va, en una frase"></textarea><div class="recopt"><label for="ed-rec_intro"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10.5l5-3v9l-5-3z"/></svg>Opciones de grabación</label><textarea id="ed-rec_intro" placeholder="Planos, ángulo, quién habla, texto en pantalla, música…"></textarea></div></div>
+    <div class="field pt3"><label class="pl" for="ed-body"><b>3 · Desarrollo</b></label><textarea id="ed-body" style="min-height:110px" placeholder="Los pasos o el proceso"></textarea><div class="recopt"><label for="ed-rec_body"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10.5l5-3v9l-5-3z"/></svg>Opciones de grabación</label><textarea id="ed-rec_body" placeholder="Planos, ángulo, quién habla, texto en pantalla, música…"></textarea></div></div>
+    <div class="field pt4"><label class="pl" for="ed-closing"><b>4 · Cierre</b><button class="mini" data-swap="closing">Otro</button></label><textarea id="ed-closing" placeholder="El resultado o el remate"></textarea><div class="recopt"><label for="ed-rec_closing"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10.5l5-3v9l-5-3z"/></svg>Opciones de grabación</label><textarea id="ed-rec_closing" placeholder="Planos, ángulo, quién habla, texto en pantalla, música…"></textarea></div></div>
+    <div class="field pt5"><label class="pl" for="ed-cta"><b>5 · Llamada a la acción</b><button class="mini" data-swap="cta">Otra</button></label><textarea id="ed-cta" placeholder="Si te ha gustado, síguenos para más"></textarea><div class="recopt"><label for="ed-rec_cta"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10.5l5-3v9l-5-3z"/></svg>Opciones de grabación</label><textarea id="ed-rec_cta" placeholder="Planos, ángulo, quién habla, texto en pantalla, música…"></textarea></div></div>
     <div class="field"><label for="ed-caption">Texto de la publicación</label><textarea id="ed-caption" style="min-height:96px"></textarea></div>
     <div class="field"><label for="ed-hashtags">Hashtags <button class="mini" id="ed-tags">Sugerir</button></label><textarea id="ed-hashtags" style="min-height:50px"></textarea></div>
     <div class="field"><label for="ed-drive">Enlace del vídeo en Drive</label><input type="url" id="ed-drive" placeholder="https://drive.google.com/…"></div>
@@ -677,6 +686,7 @@ async function loadAll(){
   try{await loading}finally{loading=null}
 }
 async function saveItem(it){
+  if(scriptComplete(it))it=withRec({...it});
   const id=it.id||uid(),body={...it,updated_at:new Date().toISOString()};delete body.id;
   if(!body.created_at)body.created_at=body.updated_at;
   const i=ITEMS.findIndex(x=>x.id===id),full={...body,id};
@@ -706,8 +716,7 @@ function openReader(id){
   $('rd-date').textContent=it.date?cap(nice(it.date)):'Sin fecha';
   $('rd-title').textContent=it.title;
   $('rd-meta').textContent=`${PILLARS[it.pillar]||''} · ${FORMATS[it.format]||''}`;
-  const part=(l,v,c='')=>v?`<div class="rd-part ${c}"><div class="eyebrow">${l}</div><p>${esc(v)}</p></div>`:'';
-  $('rd-parts').innerHTML=part('1 · Gancho',it.hook,'pt1')+part('2 · Entrada',it.intro,'pt2')+part('3 · Desarrollo',it.body,'pt3')+part('4 · Cierre',it.closing,'pt4')+part('5 · Llamada a la acción',it.cta,'pt5')+''
+  $('rd-parts').innerHTML=PART_KEYS.map((k,i)=>partHtml('rd-part',k,i,it)).join('')
     ||'<p class="muted">Este contenido todavía no tiene guion.</p>';
   $('rd-warn').hidden=scriptComplete(it);
   $('rd-idea').innerHTML=String(it.notes||'').trim()?`<div class="eyebrow">Idea del vídeo</div><p>${esc(it.notes)}</p>`:`<button class="link-btn" data-idea-add="${it.id}">+ Añadir la idea del vídeo</button>`;
@@ -752,8 +761,57 @@ let edCast=[];
 function drawEdCast(){const names=[...new Set([...team().map(m=>m.name),...edCast])];
   $('ed-cast').innerHTML=names.map(n=>`<button class="chip ${edCast.includes(n)?'cast-on':''}" data-cast-toggle="${esc(n)}">${esc(n)}</button>`).join('')}
 
+/* ============================== OPCIONES DE GRABACIÓN ============================== */
+const PART_KEYS=['hook','intro','body','closing','cta'];
+const PART_NAMES={hook:'1 · Gancho',intro:'2 · Entrada',body:'3 · Desarrollo',closing:'4 · Cierre',cta:'5 · Llamada a la acción'};
+const DUR={hook:'0-3 s',intro:'3-6 s',body:'6-25 s',closing:'2-4 s',cta:'últimos 3 s'};
+const REC_BASE={
+ reel:{hook:'Primer plano a cámara, mirando al objetivo. La frase en texto grande en pantalla desde el primer segundo.\nAlternativa: empezar enseñando el resultado final y decir la frase después.',
+  intro:'Plano medio en el salón (de pie junto al tocador o sentado en el sillón). Una sola frase, con ritmo.',
+  body:'Un plano por cada punto (2-3 s cada uno) con el texto del punto en pantalla.\nIntercalar planos de detalle: manos, producto, pelo, herramientas.\nGrabar en vertical y con luz de frente.',
+  closing:'Volver al plano medio a cámara. Frase final tranquila y con una sonrisa.\nAlternativa: cerrar con el resultado final a cámara lenta.',
+  cta:'Señalar hacia abajo o hacia la pantalla mientras aparece el texto de la llamada a la acción. Subir la música al final.'},
+ carrusel:{hook:'Portada: foto limpia del salón o del resultado, con el título en letra grande.',
+  intro:'Diapositiva 2: frase corta de contexto sobre fondo liso de la marca.',
+  body:'Una diapositiva por punto: título corto arriba y una foto o icono que lo acompañe.\nMáximo 2-3 líneas de texto por diapositiva.',
+  closing:'Penúltima diapositiva: resumen en una frase o foto del resultado.',
+  cta:'Última diapositiva: logo del salón y la llamada a la acción en grande.'},
+ stories:{hook:'Story 1: la pregunta o la frase en grande sobre fondo de color.',
+  intro:'Story 2: vídeo corto en el salón explicando de qué va.',
+  body:'Stories 3-5: un punto por story. Añadir sticker de encuesta o de pregunta.',
+  closing:'Penúltima story: el resultado o un resumen.',
+  cta:'Última story: sticker de enlace o caja de preguntas.'},
+ foto:{hook:'Foto principal con luz natural y fondo limpio. La primera línea del texto es el gancho.',
+  intro:'Segunda línea del texto: el contexto en una frase.',
+  body:'Desarrollo en el texto de la publicación, en frases cortas.',
+  closing:'Frase de cierre en el texto.',
+  cta:'Llamada a la acción al final del texto y etiqueta de ubicación del salón.'},
+ directo:{hook:'Saludar a cámara los primeros 10-20 segundos mientras entra la gente.',
+  intro:'Presentar el tema y quién está en el directo.',
+  body:'Ir punto por punto. Leer y responder los comentarios en voz alta.',
+  closing:'Resumen de lo más importante.',
+  cta:'Invitar a seguir la cuenta y anunciar el próximo directo.'}
+};
+REC_BASE.tiktok=REC_BASE.reel;
+function recDefaults(format,pillar){
+  const d={...(REC_BASE[format]||REC_BASE.reel)};
+  if(['reel','tiktok'].includes(format||'reel')){
+    if(pillar==='antes')d.body='Mismo ángulo, misma luz y misma distancia en el antes y el después.\nTransición con chasquido de dedos o tapando la cámara con la mano.\nPlanos de detalle del resultado desde varios lados.';
+    if(pillar==='proceso')d.body='Un plano por paso, de 2-3 s. Planos cenitales y de detalle de las manos.\nAcelerar las partes largas. Texto en pantalla con el nombre de cada paso.';
+    if(pillar==='clientes')d.intro='Plano medio del cliente sentado en el sillón, con el profesional al lado. Micrófono de solapa si se puede.';
+    if(pillar==='humor')d.body='Cada situación en un plano distinto, con cambio de ropa o de gesto. Usar un audio que esté en tendencia.';
+  }
+  return d;
+}
+function partHtml(cls,k,i,o){
+  const v=o[k];if(!String(v||'').trim())return '';
+  const r=String(o['rec_'+k]||'').trim(),dur=['reel','tiktok'].includes(o.format)?`<span class="dur">${DUR[k]}</span>`:'';
+  return `<div class="${cls} pt${i+1}"><div class="phead"><span class="${cls==='part'?'k':'eyebrow'}">${PART_NAMES[k]}</span>${dur}</div><p>${esc(v)}</p>${r?`<div class="recbox"><div class="rl"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10.5l5-3v9l-5-3z"/></svg>Opciones de grabación</div><p>${esc(r)}</p></div>`:''}</div>`;
+}
+function withRec(o){if(PART_KEYS.every(k=>!String(o['rec_'+k]||'').trim())){const d=recDefaults(o.format,o.pillar);PART_KEYS.forEach(k=>{o['rec_'+k]=d[k]})}return o}
+
 /* ============================== REVISADO ============================== */
-const SCRIPT_KEYS=['title','hook','intro','body','closing','cta','notes','ref_url'];
+const SCRIPT_KEYS=['title','hook','intro','body','closing','cta','notes','ref_url','rec_hook','rec_intro','rec_body','rec_closing','rec_cta'];
 function drawRev(it){
   const b=$('rd-rev');
   if(!scriptComplete(it)){b.hidden=true;return}
@@ -971,7 +1029,7 @@ function rDia(){
 }
 
 /* ============================== EDITOR ============================== */
-const F={title:'title',pillar:'pillar',format:'format',status:'status',date:'date',hook:'hook',intro:'intro',body:'body',closing:'closing',cta:'cta',caption:'caption',hashtags:'hashtags',drive:'drive_url',ref:'ref_url',notes:'notes'};
+const F={title:'title',pillar:'pillar',format:'format',status:'status',date:'date',hook:'hook',intro:'intro',body:'body',closing:'closing',cta:'cta',caption:'caption',hashtags:'hashtags',drive:'drive_url',ref:'ref_url',notes:'notes',rec_hook:'rec_hook',rec_intro:'rec_intro',rec_body:'rec_body',rec_closing:'rec_closing',rec_cta:'rec_cta'};
 function fillSel(){
   const opts=Object.entries(PILLARS).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
   $('ed-pillar').innerHTML=opts;
@@ -1065,7 +1123,7 @@ function tags(){
   $('ed-hashtags').value=t.join(' ');
 }
 function scriptTxt(o){return[o.title,`${PILLARS[o.pillar]||''} · ${FORMATS[o.format]||''}${o.date?' · '+nice(o.date):''}`,'',
-  o.notes&&`IDEA DEL VÍDEO\n${o.notes}`,o.hook&&`GANCHO\n${o.hook}`,o.intro&&`ENTRADA\n${o.intro}`,o.body&&`DESARROLLO\n${o.body}`,o.closing&&`CIERRE\n${o.closing}`,o.cta&&`LLAMADA A LA ACCIÓN\n${o.cta}`,o.cast&&o.cast.length&&`QUIÉN SALE\n${o.cast.join(', ')}`,o.ref_url&&`VÍDEO DE REFERENCIA\n${o.ref_url}`].filter(x=>x!==''&&x).join('\n\n')}
+  o.notes&&`IDEA DEL VÍDEO\n${o.notes}`,...PART_KEYS.map(k=>o[k]&&`${PART_NAMES[k].replace(/^\d · /,'').toUpperCase()}\n${o[k]}${o['rec_'+k]?`\n🎥 Grabación: ${o['rec_'+k]}`:''}`),o.cast&&o.cast.length&&`QUIÉN SALE\n${o.cast.join(', ')}`,o.ref_url&&`VÍDEO DE REFERENCIA\n${o.ref_url}`].filter(x=>x!==''&&x).join('\n\n')}
 function captionOf(t){return[t.hook,t.intro,t.closing,t.cta].filter(Boolean).join('\n\n')}
 async function copy(text,msg){
   try{await navigator.clipboard.writeText(text);toast(msg||'Copiado')}
@@ -1085,14 +1143,14 @@ function tplPicker(forceKey){
   if(same.length){h+=`<div class="wk-h">Otros guiones de ${esc(PILLARS[c.pillar])}</div>`;same.forEach(t=>{h+=item(t)})}
   picker('Completar con un guion',h);
 }
-function applyTpl(i){const t=PK[i];if(!t)return;const c=getEd();setEd({...c,...t,title:c.title||t.title,date:c.date,status:c.status,drive_url:c.drive_url,ref_url:c.ref_url,caption:captionOf({...c,...t}),cast:c.cast.length?c.cast:suggestCast(t.pillar,t.title)});hide('picker');toast('Guion aplicado: revisa y guarda')}
+function applyTpl(i){const t=withRec({...PK[i]});if(!PK[i])return;const c=getEd();setEd({...c,...t,title:c.title||t.title,date:c.date,status:c.status,drive_url:c.drive_url,ref_url:c.ref_url,caption:captionOf({...c,...t}),cast:c.cast.length?c.cast:suggestCast(t.pillar,t.title)});hide('picker');toast('Guion aplicado: revisa y guarda')}
 
 /* ============================== GUIONES ============================== */
 function card(t,acts,feature){
   const part=(l,v,c)=>v?`<div class="part ${c}"><span class="k">${l}</span><p>${esc(v)}</p></div>`:'';
   return `<article class="script ${feature?'feature':''}"><div class="eyebrow">${PILLARS[t.pillar]} · ${FORMATS[t.format]}</div><h3>${esc(t.title)}</h3>
    ${(t.cast&&t.cast.length)?`<div class="castbox" style="margin:0 0 6px"><span class="eyebrow">Pensado para</span><div class="cast">${castHtml(t.cast)}</div></div>`:''}
-   ${part('1 · Gancho',t.hook,'pt1')}${part('2 · Entrada',t.intro,'pt2')}${part('3 · Desarrollo',t.body,'pt3')}${part('4 · Cierre',t.closing,'pt4')}${part('5 · Llamada a la acción',t.cta,'pt5')}${part('Idea del vídeo',t.notes,'ptn')}
+   ${(()=>{const w=withRec({...t});return PART_KEYS.map((k,i)=>partHtml('part',k,i,w)).join('')})()}${part('Idea del vídeo',t.notes,'ptn')}
    <div class="row">${acts}</div></article>`;
 }
 function rGen(){
@@ -1390,6 +1448,7 @@ $('ch-send').onclick=sendNote;
 $('rd-note').onclick=()=>{const id=reading;hide('reader');openChat(id)};
 $('ed-note').onclick=()=>{const id=editing;hide('editor');openChat(id)};
 $('rd-done').onclick=markRecorded;
+$('ed-recsug').onclick=()=>{const d=recDefaults($('ed-format').value,$('ed-pillar').value);let n=0;PART_KEYS.forEach(k=>{const el=$('ed-rec_'+k);if(!el.value.trim()){el.value=d[k];n++}});toast(n?'Opciones sugeridas: cámbialas a tu gusto':'Ya tienen opciones; bórralas si quieres otras')};
 $('rd-complete').onclick=async()=>{const it=ITEMS.find(x=>x.id===reading);if(!it)return;const c=autoComplete(it);
   if(c){if(await saveItem({...c,status:c.date&&c.status==='idea'?'guion':c.status})){toast('Guion completado');openReader(it.id);render()}}
   else{hide('reader');openEd(it,false);tplPicker()}};
